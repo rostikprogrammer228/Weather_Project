@@ -7,7 +7,6 @@ from .app import application
 from .left_container import LeftContainer
 from .weather_container import WeatherContainer
 
-
 class MainWindow(widgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -15,7 +14,7 @@ class MainWindow(widgets.QMainWindow):
         self.setWindowFlags(core.Qt.WindowType.FramelessWindowHint)
         
         window_width = 1200
-        window_height = 800
+        window_height = 828
 
         screen = application.primaryScreen()
         screen_size = screen.size()
@@ -31,9 +30,9 @@ class MainWindow(widgets.QMainWindow):
         
         content_container = widgets.QFrame(parent = self)
         content_layout = widgets.QVBoxLayout()
-        # Егор Столяров
+        
         content_layout.setSpacing(0)
-        # Максим. Указать contents margins
+        
         content_layout.setContentsMargins(0,0,0,0)
 
         content_container.setLayout(content_layout)
@@ -44,8 +43,20 @@ class MainWindow(widgets.QMainWindow):
         content_layout.addWidget(header)
         
         central_widget = widgets.QWidget(content_container)
-        central_widget.setFixedSize(1200,760  )
+        central_widget.setFixedSize(1200,828)
         content_layout.addWidget(central_widget)
+        
+        central_widget.setObjectName("Central_widget")
+        
+        central_widget.setStyleSheet("""
+            #Central_widget {
+                background: qlineargradient(
+                    x1:0 y1:1,
+                    x2:1 y2:0,
+                    stop:0 #87CEFA stop:1 #FFDF56
+                    );
+            }
+        """)
         
         center_widget_layout = widgets.QHBoxLayout()
         center_widget_layout.setSpacing(0)
@@ -78,6 +89,4 @@ class MainWindow(widgets.QMainWindow):
             print(f"Key: {event.key()}")
             print(f"Text: {event.text()}")
         
-
 main_window = MainWindow()
-

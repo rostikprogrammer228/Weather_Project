@@ -2,6 +2,7 @@ import PyQt6.QtWidgets as widgets
 import PyQt6.QtGui as gui
 import PyQt6.QtCore as core
 import PyQt6.QtWebEngineWidgets as WebEngine
+
 import folium 
 import io
 
@@ -11,9 +12,10 @@ class LeftContainer(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.COUNTER = 1
-        self.setFixedSize(370, 800)
-        self.setStyleSheet("background-color:yellow")
-        # Создание лайаута левого контейнера и его настройка
+        self.setFixedSize(370, 828)
+        
+        self.setStyleSheet("background-color: rgba(0, 0, 0, 0.2);")
+        
         leftcontainer_layout = widgets.QVBoxLayout()
         self.setLayout(leftcontainer_layout)
         leftcontainer_layout.setAlignment(core.Qt.AlignmentFlag.AlignTop)
@@ -23,7 +25,6 @@ class LeftContainer(widgets.QFrame):
         
         leftcontainer_header = widgets.QFrame(self)
         leftcontainer_header.setFixedSize(370, 44)
-        leftcontainer_header.setStyleSheet("background-color: purple")
         
         header_layout = widgets.QHBoxLayout()
         header_layout.setAlignment(core.Qt.AlignmentFlag.AlignRight)
@@ -36,7 +37,7 @@ class LeftContainer(widgets.QFrame):
         self.CHANGE_THEME_BUTTON.setFixedSize(54,24)
         self.CHANGE_THEME_BUTTON.setIconSize(self.CHANGE_THEME_BUTTON.size())
         
-        self.CHANGE_THEME_BUTTON.setStyleSheet("padding: 0; margin: 0; border: none;")
+        self.CHANGE_THEME_BUTTON.setStyleSheet("border : none;background-color: transparent;")
         
         change_theme_icon = gui.QIcon("media/title_bar/light_theme.svg")
         self.CHANGE_THEME_BUTTON.setIcon(change_theme_icon)
@@ -52,15 +53,19 @@ class LeftContainer(widgets.QFrame):
         leftcontainer_layout.addWidget(frame)
 
         scroll_area = widgets.QScrollArea(parent = frame)
+        
         scroll_frame = widgets.QFrame(parent = scroll_area)
         
         scroll_frame_layout = widgets.QVBoxLayout()
         scroll_frame.setLayout(scroll_frame_layout)
         
         scroll_frame_layout.setAlignment(core.Qt.AlignmentFlag.AlignTop)
+        
+        scroll_area.setVerticalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        
 
-        scroll_area.setFixedSize(370, 756)
-        scroll_area.setStyleSheet("background-color: red")
+        scroll_area.setFixedSize(370, 730)
+        scroll_area.setStyleSheet("background-color: transparent;")
         
         scroll_area.setWidget(scroll_frame)
         scroll_area.setWidgetResizable(True)

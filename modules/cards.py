@@ -5,9 +5,8 @@ import PyQt6.QtCore as core
 class Cards(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
-
+        self.setStyleSheet("border-bottom: 1px solid #859892;")
         self.setFixedSize(315, 82)
-        self.setStyleSheet("background-color: cyan")
         
         card_layout = widgets.QHBoxLayout()
         card_layout.setContentsMargins(0,0,0,0)
@@ -16,7 +15,7 @@ class Cards(widgets.QFrame):
 
         frame1 = widgets.QFrame(parent = self)
         frame1.setFixedSize(105, 82)
-        frame1.setStyleSheet("background-color: pink")
+        frame1.setStyleSheet("border: none;")
         
         frame1_layout = widgets.QVBoxLayout()
         frame1.setLayout(frame1_layout)
@@ -32,7 +31,7 @@ class Cards(widgets.QFrame):
 
         frame2 = widgets.QFrame(parent = self)
         frame2.setFixedSize(105, 82)
-        frame2.setStyleSheet("background-color: pink")
+        frame2.setStyleSheet("border: none;")
         
         frame2_layout = widgets.QVBoxLayout()
         frame2.setLayout(frame2_layout)
@@ -49,4 +48,3 @@ class Cards(widgets.QFrame):
         
         
         
-        # Remove-Item -Recurse -Force .git

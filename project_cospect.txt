@@ -1,0 +1,17 @@
+
+
+layout.addWidget(widget, |alignment = core.Qt.AlignmentFlag.AlignTop|) - способ задачи выравнивания конкретному обьекту как параметр
+
+widget.setStyleSheet("background-color: |rgba(0, 0, 0, 0.2)|;") - способ задать цвет фона в виде rgb палитры, где 4 значение это прозрачность
+
+widget.setStyleSheet("|background-color: transparent|;") - убрать фоновый цвет
+
+scroll_area.|setVertical/HorisontalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)| - убрать отображение ползунка для скрола в вертикальном/горизонтальном виде
+
+widget.setStyleSheet("""
+                background: qlineargradient(
+                    x1:0 y1:1,
+                    x2:1 y2:0,
+                    stop:0 #87CEFA stop:1 #FFDF56
+                    );
+        """) - задать цвет фона градиентом, где x1,x2 и y1,y2 это координаты начала и конца градиента,а stop:0 и stop:1 это начальный и конечный цвет градиента
