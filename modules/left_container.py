@@ -11,7 +11,7 @@ from .cards import Cards
 class LeftContainer(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
-        
+        self.COUNTER = 0
         
         self.setFixedSize(370, 828)
         
@@ -75,13 +75,15 @@ class LeftContainer(widgets.QFrame):
         
         
         
-        card1 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card2 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card3 = Cards(parent = scroll_frame,city_name = "Dnipro")
+        card1 = Cards(parent = scroll_frame,city_name = "London")
+        card2 = Cards(parent = scroll_frame,city_name = "Odesa")
+        card3 = Cards(parent = scroll_frame,city_name = "Kyiv")
         card4 = Cards(parent = scroll_frame,city_name = "Dnipro")
         card5 = Cards(parent = scroll_frame,city_name = "Dnipro")
         card6 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        
+        card7 = Cards(parent = scroll_frame,city_name = "Dnipro")
+        card8 = Cards(parent = scroll_frame,city_name = "Dnipro")
+        card9 = Cards(parent = scroll_frame,city_name = "Dnipro")
 
         scroll_frame_layout.addWidget(card1, alignment = core.Qt.AlignmentFlag.AlignHCenter)
         scroll_frame_layout.addWidget(card2, alignment = core.Qt.AlignmentFlag.AlignHCenter)
@@ -89,7 +91,9 @@ class LeftContainer(widgets.QFrame):
         scroll_frame_layout.addWidget(card4, alignment = core.Qt.AlignmentFlag.AlignHCenter)
         scroll_frame_layout.addWidget(card5, alignment = core.Qt.AlignmentFlag.AlignHCenter)
         scroll_frame_layout.addWidget(card6, alignment = core.Qt.AlignmentFlag.AlignHCenter)
-    
+        scroll_frame_layout.addWidget(card7, alignment = core.Qt.AlignmentFlag.AlignHCenter)
+        scroll_frame_layout.addWidget(card8, alignment = core.Qt.AlignmentFlag.AlignHCenter)        
+        scroll_frame_layout.addWidget(card9, alignment = core.Qt.AlignmentFlag.AlignHCenter)    
     def change_button(self):
         
         if self.COUNTER % 2 == 0:

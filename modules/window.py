@@ -29,6 +29,7 @@ class MainWindow(widgets.QMainWindow):
         self.setWindowTitle("Project")
         
         content_container = widgets.QFrame(parent = self)
+        content_container.setSizePolicy(widgets.QSizePolicy.Policy.Expanding, widgets.QSizePolicy.Policy.Expanding)
         content_layout = widgets.QVBoxLayout()
         
         content_layout.setSpacing(0)
@@ -40,16 +41,17 @@ class MainWindow(widgets.QMainWindow):
         content_container.setFixedSize(window_width, window_height)
         
         header = Header(parent = content_container)
+        
         content_layout.addWidget(header)
         
         central_widget = widgets.QWidget(content_container)
         central_widget.setFixedSize(1200,828)
         content_layout.addWidget(central_widget)
         
-        central_widget.setObjectName("Central_widget")
+        content_container.setObjectName("Content_container")
         
-        central_widget.setStyleSheet("""
-            #Central_widget {
+        content_container.setStyleSheet("""
+            #Content_container {
                 background: qlineargradient(
                     x1:0 y1:1,
                     x2:1 y2:0,
