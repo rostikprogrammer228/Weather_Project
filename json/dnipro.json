@@ -32,10 +32,10 @@
         "all": 23
     },
     "dt": 1779385125,
-    "sys": {
-        "country": "UA",
-        "sunrise": 1779328384,
-        "sunset": 1779384031
+        "sys": {
+            "country": "UA",
+            "sunrise": 1779328384,
+            "sunset": 1779384031
     },
     "timezone": 10800,
     "id": 709930,

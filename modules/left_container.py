@@ -77,15 +77,15 @@ class LeftContainer(widgets.QFrame):
         
         
         
-        card1 = Cards(parent = scroll_frame,city_name = "London")
+        card1 = Cards(parent = scroll_frame,city_name = "Dnipro")
         card2 = Cards(parent = scroll_frame,city_name = "Odesa")
         card3 = Cards(parent = scroll_frame,city_name = "Kyiv")
-        card4 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card5 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card6 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card7 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card8 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card9 = Cards(parent = scroll_frame,city_name = "Dnipro")
+        card4 = Cards(parent = scroll_frame,city_name = "Kharkiv")
+        card5 = Cards(parent = scroll_frame,city_name = "Zaporizhzhia")
+        card6 = Cards(parent = scroll_frame,city_name = "Lviv")
+        card7 = Cards(parent = scroll_frame,city_name = "London")
+        card8 = Cards(parent = scroll_frame,city_name = "Maldives")
+        card9 = Cards(parent = scroll_frame,city_name = "New York")
 
         scroll_frame_layout.addWidget(card1, alignment = core.Qt.AlignmentFlag.AlignHCenter)
         scroll_frame_layout.addWidget(card2, alignment = core.Qt.AlignmentFlag.AlignHCenter)

@@ -30,41 +30,21 @@ Cards.CARDS_LIST  - получение атрибута класса
 label.setText(text) - задать новый текст для обьекта QLabel
 
 
+label.setAlignment(core.Qt.AlignmentFlag.AlignCenter) - задает выравнивание тексту лэйбла
+
+
+pixmap.scaled(84, 87, core.Qt.AspectRatioMode.IgnoreAspectRatio, core.Qt.TransformationMode.SmoothTransformation) - гладкое выравнивание размеров пиксмап-иконки
+
+sunrise = self.REQUEST_DATA["sys"]["sunrise"] + city_timezone - берет время восхода солнца из API(01.01.1970) и переводит его в локальное
+
+datetime.fromtimestamp(sunrise).strftime("%H:%M") - метод fromtimestamp преобразовывает пройденое время в секуднах от 01.01.1970 отчета в сегодняшнюю дату
+        
+label.setStyleSheet("font-family: 'Roboto';font-weight: 500;") - меня стиль тектса, где font-family - сам шрифт, а font-weight - толщина
+
+color: rgba(255, 255, 255, 0.8);
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-if event.button() == core.Qt.MouseButton.LeftButton and self.SELECTED == False:
-            if Cards.CARDS_SELECTED_COUNTER < 1:
-                
-                self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 17px;")
-                self.SELECTED = True
-                
-                Cards.CARDS_SELECTED_COUNTER += 1
-                
-            elif Cards.CARDS_SELECTED_COUNTER >= 1:
-                
-                for card in Cards.CARDS_LIST:
-                    
-                    if card.SELECTED:
-                        card.setStyleSheet("background-color: transparent; border-radius: 17px;")
-                        card.SELECTED = False
-
-                Cards.CARDS_SELECTED_COUNTER = 1
-                
-                self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 17px;")
-                self.SELECTED = True
 
