@@ -7,6 +7,7 @@ from datetime import datetime, timezone, timedelta
 from .vertical_card import Vertical_Card
 from .sun_move_card import Sun_Move_Card
 
+
 class Cards(widgets.QFrame):
    
     CARDS_LIST = []
@@ -101,27 +102,53 @@ class Cards(widgets.QFrame):
             self.day_request_data = request(self.CITY_NAME, "daily")
             
             weather_container = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
+            
             clear_layout(weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT)
+            clear_layout(weather_container.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT)
+            clear_layout(weather_container.FORECAST_DIAGRAM_ITSELF_LAYOUT)
+            
             for index in range(len(self.day_request_data["list"])):
+                hour_data = self.day_request_data["list"][index]
+                hour_temp = hour_data["main"]["temp"]
+                
+                hour_time = datetime.fromtimestamp(hour_data["dt"]+ self.day_request_data["city"]["timezone"], timezone.utc).hour 
+                if index <= 21:
+                    weather_forecast_icon = widgets.QLabel(parent = weather_container.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME)
+                    weather_forecast_icon.setFixedSize(16,16)
+                    forecast_icon = gui.QPixmap(f"media/title_bar/scrollbar_weather_icons/{hour_data["weather"][0]["icon"]}.png")
+                    
+                    if not forecast_icon.isNull():
+                        scaled_pixmap = forecast_icon.scaled(16,16, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
+                        weather_forecast_icon.setPixmap(scaled_pixmap)
+                    weather_container.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT.addWidget(weather_forecast_icon, alignment = core.Qt.AlignmentFlag.AlignCenter)
+                    
+                    for i in range(3):
+                        height = 3 * int(hour_temp)
+                        diagramma = widgets.QFrame(parent = weather_container.FORECAST_DIAGRAM_ITSELF_FRAME)
+                        diagramma.setFixedWidth(8)
+                        diagramma.setFixedHeight(height)
+                        
+                        diagramma.setStyleSheet("""background: qlineargradient(y1:0, y2:1, stop:0 #FFDF56 stop:1 #87CEFA);""")
+                        
+                        weather_container.FORECAST_DIAGRAM_ITSELF_LAYOUT.addWidget(diagramma, alignment = core.Qt.AlignmentFlag.AlignBottom)
+                
                 if index == 0:
                     self.TEXT_LABEL = "Зараз"
                 
-                hour_data = self.day_request_data["list"][index]
                 
-                hour_time = datetime.fromtimestamp(hour_data["dt"]+ self.day_request_data["city"]["timezone"], timezone.utc).hour 
-               
+                
                 if hour_time > 24:
                     hour_time -=24
                 elif hour_time < 0:
                     hour_time +=24
-                hour_temp = hour_data["main"]["temp"]
+                
 
                 if index + 1 < len(self.day_request_data["list"]):
                     next_hour = datetime.fromtimestamp(self.day_request_data["list"][index + 1]["dt"] + self.day_request_data["city"]["timezone"], timezone.utc).hour
-                   
+                    
                     if next_hour > 24:
                         next_hour -=24
-                    elif next_hour < 0 :
+                    elif next_hour <= 0 :
                         next_hour += 24    
                 else:
                     next_hour = None
@@ -134,13 +161,18 @@ class Cards(widgets.QFrame):
                 else:
                     vertical_card.TIME_LABEL.setText(f"{hour_time}")
                 pixmap_scroll_card = gui.QPixmap(f"media/title_bar/scrollbar_weather_icons/{hour_data["weather"][0]["icon"]}.png")
-                    
+               
                 if not pixmap_scroll_card.isNull():
                     scaled_pixmap = pixmap_scroll_card.scaled(24,24, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
                     vertical_card.WEATHER_LABEL.setPixmap(scaled_pixmap)
                     
                 vertical_card.TEMPERATURE_LABEL.setText(f"{int(hour_temp)}°")
                 weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT.addWidget(vertical_card)
+                # print(f"city - {self.day_request_data["city"]["name"]}")
+                # print(f"sunrise - {self.SUNRISE_TIME.hour}")
+                # print(f"sunset - {self.SUNSET_TIME.hour}")
+                # print(f"hour - {hour_time}")
+                # print(f"next_hour - {next_hour}")
                 
                 if next_hour is not None and self.SUNRISE_TIME.hour >= hour_time and self.SUNRISE_TIME.hour < next_hour:
                     sunrise_card = Sun_Move_Card(parent = weather_container.DAY_WEATHER_SCROLL_FRAME)
@@ -219,10 +251,10 @@ class Cards(widgets.QFrame):
             
             for card in Cards.CARDS_LIST:
                 if card.SELECTED:
-                    card.setStyleSheet("background-color: transparent; border-radius: 8px;")
+                    card.setStyleSheet("background-color: transparent; border-radius:0px;border-bottom: 1px solid #859892;")
                     card.SELECTED = False
 
-            self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 8px; border-bottom: 1px solid #859892;")
+            self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 8px;border-bottom: 1px solid #859892;")
             self.SELECTED = True
             
             

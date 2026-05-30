@@ -50,7 +50,7 @@ class WeatherContainer(widgets.QFrame):
         # Внутри moment weather frame
         self.LEFT_MOMENT_FRAME = widgets.QFrame(self.MOMENT_WEATHER_FRAME)
         self.LEFT_MOMENT_FRAME.setFixedSize(390, 303)
-        self.LEFT_MOMENT_FRAME.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 17px;")
+        self.LEFT_MOMENT_FRAME.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 10px;")
         self.MOMENT_WEATHER_LAYOUT.addWidget(self.LEFT_MOMENT_FRAME)
         
         self.LEFT_MOMENT_LAYOUT = widgets.QVBoxLayout(self.LEFT_MOMENT_FRAME)
@@ -136,7 +136,7 @@ class WeatherContainer(widgets.QFrame):
         # Внутри right moment frame
         self.RIGHT_TODAY_FRAME = widgets.QFrame(self.RIGHT_MOMENT_FRAME)
         self.RIGHT_TODAY_FRAME.setFixedSize(358, 27)
-        self.RIGHT_TODAY_FRAME.setStyleSheet("border-radius: 0px;background-color: transparent; border-bottom: 1px solid #c7c07f;")
+        self.RIGHT_TODAY_FRAME.setStyleSheet("border-radius: 0px;background-color: transparent; border-bottom: 1px solid b4b4b4;")
         self.RIGHT_MOMENT_LAYOUT.addWidget(self.RIGHT_TODAY_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
         
         self.RIGHT_TODAY_LAYOUT = widgets.QHBoxLayout(self.RIGHT_TODAY_FRAME)
@@ -148,8 +148,8 @@ class WeatherContainer(widgets.QFrame):
         # Внутри right moment frame
         self.RIGHT_TODAY_LABEL = widgets.QLabel(self.RIGHT_MOMENT_FRAME, text = "Сьогодні")
         self.RIGHT_TODAY_LABEL.setFixedSize(67, 19)
-        self.RIGHT_TODAY_LABEL.setStyleSheet("color: white; font-size: 16px; border-radius: 0px;background-color: transparent; border: none;")
-        self.RIGHT_TODAY_LAYOUT.addWidget(self.RIGHT_TODAY_LABEL, alignment = core.Qt.AlignmentFlag.AlignLeft)
+        self.RIGHT_TODAY_LABEL.setStyleSheet("color: white; font-size: 16px; border-radius: 0px;background-color: transparent; border: none; font-family: 'Roboto';font-weight: 500;")
+        self.RIGHT_TODAY_LAYOUT.addWidget(self.RIGHT_TODAY_LABEL, alignment = core.Qt.AlignmentFlag.AlignLeft) 
         
         self.RIGHT_DATA_FRAME = widgets.QFrame(self.RIGHT_MOMENT_FRAME)
         self.RIGHT_DATA_FRAME.setFixedSize(358, 44)
@@ -192,6 +192,7 @@ class WeatherContainer(widgets.QFrame):
         self.RIGHT_CLOCK_LABEL.setStyleSheet("color: white; font-size: 29px; border-radius: 0px;background-color: transparent; font-family: 'Roboto';font-weight: 500;")
         self.RIGHT_CLOCK_LAYOUT.addWidget(self.RIGHT_CLOCK_LABEL)
         
+        # weather scroll bar
         # Внутри main frame
         self.DAY_WEATHER_FRAME = widgets.QFrame(self.MAIN_FRAME) 
         self.DAY_WEATHER_FRAME.setFixedSize(788, 157)
@@ -206,8 +207,9 @@ class WeatherContainer(widgets.QFrame):
         
         self.DAY_WEATHER_TOP_LABEL = widgets.QLabel(self.DAY_WEATHER_FRAME, text = "Очікуваний прогноз погоди на 5 днів")
         self.DAY_WEATHER_TOP_LABEL.setFixedSize(756, 27)
+        self.DAY_WEATHER_TOP_LABEL.setAlignment(core.Qt.AlignmentFlag.AlignVCenter and core.Qt.AlignmentFlag.AlignLeft) 
         self.DAY_WEATHER_FRAME_LAYOUT.addWidget(self.DAY_WEATHER_TOP_LABEL, alignment = core.Qt.AlignmentFlag.AlignCenter)
-        self.DAY_WEATHER_TOP_LABEL.setStyleSheet("border-radius: 0px; background-color: transparent; font-family: 'Roboto'; font-weight: 500; color: #FFFFFF; font-size: 16px; border-bottom: 1px solid white;")
+        self.DAY_WEATHER_TOP_LABEL.setStyleSheet("border-radius: 0px; background-color: transparent; font-family: 'Roboto'; font-weight: 500; color: #FFFFFF; font-size: 16px; border-bottom: 1px solid #b4b4b4;")
         
         self.DAY_WEATHER_MAIN_SCROLL_FRAME = widgets.QFrame(self.DAY_WEATHER_FRAME)
         self.DAY_WEATHER_MAIN_SCROLL_FRAME.setFixedSize(756, 82)
@@ -262,36 +264,131 @@ class WeatherContainer(widgets.QFrame):
         self.DAY_WEATHER_MAIN_SCROLL_FRAME_LAYOUT.addWidget(self.SCROLL_LEFT_BUTTON, alignment = core.Qt.AlignmentFlag.AlignLeft) 
         self.DAY_WEATHER_MAIN_SCROLL_FRAME_LAYOUT.addWidget(self.DAY_WEATHER_SCROLL_PARENT, alignment = core.Qt.AlignmentFlag.AlignCenter)
         self.DAY_WEATHER_MAIN_SCROLL_FRAME_LAYOUT.addWidget(self.SCROLL_RIGHT_BUTTON, alignment = core.Qt.AlignmentFlag.AlignRight)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        # Внутри main frame
-        self.DIAGRAM_FRAME = widgets.QFrame(self.MAIN_FRAME)
-        self.DIAGRAM_FRAME.setFixedSize(788, 197)
-        self.DIAGRAM_FRAME.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 17px;")
-        self.MAIN_FRAME_LAYOUT.addWidget(self.DIAGRAM_FRAME)
-        
-        self.DIAGRAM_FRAME_LAYOUT = widgets.QVBoxLayout(self.DIAGRAM_FRAME)
-        self.DIAGRAM_FRAME.setLayout(self.DIAGRAM_FRAME_LAYOUT)
-        self.DIAGRAM_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
-        self.DIAGRAM_FRAME_LAYOUT.setSpacing(16)
-        
-        self.DIAGRAM_LABLE = widgets.QLabel(self.DIAGRAM_FRAME, text = "Прогноз на 12 годин")
-        self.DIAGRAM_LABLE.setFixedSize(756, 19)
-        self.DIAGRAM_FRAME_LAYOUT.addWidget(self.DIAGRAM_LABLE, alignment = core.Qt.AlignmentFlag.AlignHCenter)
 
+        
+        
+        
+        # Диаграма
+        # Внутри main frame
+        self.DIAGRAM_WEATHER_FRAME = widgets.QFrame(self.MAIN_FRAME)
+        self.DIAGRAM_WEATHER_FRAME.setFixedSize(788, 197)
+        self.DIAGRAM_WEATHER_FRAME.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 10px;")
+        self.MAIN_FRAME_LAYOUT.addWidget(self.DIAGRAM_WEATHER_FRAME)
+        
+        self.DIAGRAM_FRAME_LAYOUT = widgets.QVBoxLayout(self.DIAGRAM_WEATHER_FRAME)
+        self.DIAGRAM_WEATHER_FRAME.setLayout(self.DIAGRAM_FRAME_LAYOUT)
+        self.DIAGRAM_FRAME_LAYOUT.setContentsMargins(16,16,16,16)
+        self.DIAGRAM_FRAME_LAYOUT.setSpacing(0)
+        # Внутри diagram weather frame
+        self.MAIN_DIAGRAM_FRAME = widgets.QFrame(self.DIAGRAM_WEATHER_FRAME)
+        self.MAIN_DIAGRAM_FRAME.setFixedSize(756,165)
+        self.MAIN_DIAGRAM_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        self.DIAGRAM_FRAME_LAYOUT.addWidget(self.MAIN_DIAGRAM_FRAME)
+
+        self.MAIN_DIAGRAM_FRAME_LAYOUT = widgets.QVBoxLayout(self.MAIN_DIAGRAM_FRAME)
+        self.MAIN_DIAGRAM_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
+        self.MAIN_DIAGRAM_FRAME_LAYOUT.setSpacing(8)
+        self.MAIN_DIAGRAM_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
+        self.MAIN_DIAGRAM_FRAME.setLayout(self.MAIN_DIAGRAM_FRAME_LAYOUT)
+        
+        # Внутри main diagram frame
+        self.DIAGRAM_LABEL = widgets.QLabel(self.MAIN_DIAGRAM_FRAME, text = "Прогноз на 36 годин")
+        self.DIAGRAM_LABEL.setAlignment(core.Qt.AlignmentFlag.AlignVCenter and core.Qt.AlignmentFlag.AlignLeft)
+        self.DIAGRAM_LABEL.setFixedSize(756, 27)
+        self.DIAGRAM_LABEL.setStyleSheet("border-radius: 0px; background-color: transparent; font-family: 'Roboto'; font-weight: 500; color: #FFFFFF; font-size: 16px; border-bottom: 1px solid #b4b4b4;")
+        self.MAIN_DIAGRAM_FRAME_LAYOUT.addWidget(self.DIAGRAM_LABEL, alignment = core.Qt.AlignmentFlag.AlignCenter)
+        
+        # Внутри main diagram frame
+        self.FORECAST_DIAGRAM_FRAME = widgets.QFrame(self.MAIN_DIAGRAM_FRAME)
+        self.FORECAST_DIAGRAM_FRAME.setFixedSize(758, 130)
+        self.FORECAST_DIAGRAM_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        self.MAIN_DIAGRAM_FRAME_LAYOUT.addWidget(self.FORECAST_DIAGRAM_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
+        
+        self.FORECAST_DIAGRAM_FRAME_LAYOUT = widgets.QVBoxLayout(self.FORECAST_DIAGRAM_FRAME)
+        self.FORECAST_DIAGRAM_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
+        self.FORECAST_DIAGRAM_FRAME_LAYOUT.setSpacing(0)
+        self.FORECAST_DIAGRAM_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
+        self.FORECAST_DIAGRAM_FRAME.setLayout(self.FORECAST_DIAGRAM_FRAME_LAYOUT)
+
+        # Внутри forecast diagram frame
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME = widgets.QFrame(self.FORECAST_DIAGRAM_FRAME)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME.setFixedSize(758, 20)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        
+        self.FORECAST_DIAGRAM_FRAME_LAYOUT.addWidget(self.FORECAST_DIAGRAM_ICON_PARENT_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT = widgets.QHBoxLayout(self.FORECAST_DIAGRAM_ICON_PARENT_FRAME)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT.setSpacing(0)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignTop)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME.setLayout(self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT)
+
+        # Внутри forecast diagram icon parent frame  
+        
+        self.FORECAST_DIAGRAM_ICON_FRAME = widgets.QFrame(self.FORECAST_DIAGRAM_FRAME)
+        self.FORECAST_DIAGRAM_ICON_FRAME.setFixedSize(730, 20)
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT.addWidget(self.FORECAST_DIAGRAM_ICON_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
+        
+        self.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT = widgets.QHBoxLayout(self.FORECAST_DIAGRAM_ICON_FRAME)
+        self.FORECAST_DIAGRAM_ICON_FRAME.setLayout(self.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT)
+        self.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT
+        self.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
+        self.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT.setSpacing(19)
+        
+        # Внутри forecast diagram icon parent frame
+        self.FORECAST_DIAGRAM_ICON_PARENT_CORNER_FRAME = widgets.QFrame(self.FORECAST_DIAGRAM_ICON_PARENT_FRAME)
+        self.FORECAST_DIAGRAM_ICON_PARENT_CORNER_FRAME.setFixedSize(32,20)
+        self.FORECAST_DIAGRAM_ICON_PARENT_CORNER_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        self.FORECAST_DIAGRAM_ICON_PARENT_FRAME_LAYOUT.addWidget(self.FORECAST_DIAGRAM_ICON_PARENT_CORNER_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
+
+        # Внутри forecast diagram frame
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME = widgets.QFrame(self.FORECAST_DIAGRAM_FRAME)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME.setFixedSize(758, 110)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        self.FORECAST_DIAGRAM_FRAME_LAYOUT.addWidget(self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
+        
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT = widgets.QHBoxLayout(self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT.setSpacing(0)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignTop)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME.setLayout(self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT)
+        # Внутри forecast diagram and temperature frame
+        
+        self.FORECAST_DIAGRAM_ITSELF_FRAME = widgets.QFrame(self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME)
+        self.FORECAST_DIAGRAM_ITSELF_FRAME.setFixedSize(728, 110)
+        self.FORECAST_DIAGRAM_ITSELF_FRAME.setStyleSheet("background-image: url('media/title_bar/spreadsheet.png');")
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT.addWidget(self.FORECAST_DIAGRAM_ITSELF_FRAME, alignment = core.Qt.AlignmentFlag.AlignCenter)
+        
+        self.FORECAST_DIAGRAM_ITSELF_LAYOUT = widgets.QHBoxLayout(self.FORECAST_DIAGRAM_ITSELF_FRAME)
+        self.FORECAST_DIAGRAM_ITSELF_LAYOUT.setContentsMargins(1,0,3,0)
+        self.FORECAST_DIAGRAM_ITSELF_LAYOUT.setSpacing(3)
+        self.FORECAST_DIAGRAM_ITSELF_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignBottom)
+        self.FORECAST_DIAGRAM_ITSELF_FRAME.setLayout(self.FORECAST_DIAGRAM_ITSELF_LAYOUT)
+        # Внутри forecast diagram and temperature frame
+        
+        self.FORECAST_TEMPERATURE_ITSELF_LABEL = widgets.QLabel(parent = self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME,text ="25°\n20°\n15°\n10°\n5°\n0°\n-5°\n-10°")
+        self.FORECAST_TEMPERATURE_ITSELF_LABEL.setStyleSheet(f"border-radius: 0px; background-color: transparent; font-family: 'Roboto'; font-weight: 400; color: #FFFFFF; font-size: 12px;")
+        self.FORECAST_TEMPERATURE_ITSELF_LABEL.setFixedSize(30, 110)
+        self.FORECAST_TEMPERATURE_ITSELF_LABEL.setAlignment(core.Qt.AlignmentFlag.AlignVCenter)
+        self.FORECAST_DIAGRAM_AND_TEMPERATURE_FRAME_LAYOUT.addWidget(self.FORECAST_TEMPERATURE_ITSELF_LABEL, alignment = core.Qt.AlignmentFlag.AlignCenter)
+
+        
+        
+
+        
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+        
     def scroll_left(self):
         hbar = self.DAY_WEATHER_SCROLL_AREA.horizontalScrollBar()
         hbar.setValue(hbar.minimum())

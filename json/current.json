@@ -1,44 +1,47 @@
 {
     "coord": {
-        "lon": 24.0232,
-        "lat": 49.8383
+        "lon": 34.9833,
+        "lat": 48.45
     },
     "weather": [
         {
-            "id": 804,
-            "main": "Clouds",
-            "description": "\u0445\u043c\u0430\u0440\u043d\u043e",
-            "icon": "04n"
+            "id": 500,
+            "main": "Rain",
+            "description": "\u043b\u0435\u0433\u043a\u0438\u0439 \u0434\u043e\u0449",
+            "icon": "10d"
         }
     ],
     "base": "stations",
     "main": {
-        "temp": 13.38,
-        "feels_like": 12.97,
-        "temp_min": 13.38,
-        "temp_max": 13.38,
-        "pressure": 1019,
-        "humidity": 84,
-        "sea_level": 1019,
-        "grnd_level": 982
+        "temp": 11.56,
+        "feels_like": 10.49,
+        "temp_min": 11.56,
+        "temp_max": 11.56,
+        "pressure": 1008,
+        "humidity": 66,
+        "sea_level": 1008,
+        "grnd_level": 996
     },
     "visibility": 10000,
     "wind": {
-        "speed": 3.03,
-        "deg": 212,
-        "gust": 4.72
+        "speed": 2.16,
+        "deg": 264,
+        "gust": 1.94
+    },
+    "rain": {
+        "1h": 0.13
     },
     "clouds": {
         "all": 100
     },
-    "dt": 1780081430,
+    "dt": 1780150555,
     "sys": {
         "country": "UA",
-        "sunrise": 1780021395,
-        "sunset": 1780078780
+        "sunrise": 1780105481,
+        "sunset": 1780162248
     },
     "timezone": 10800,
-    "id": 702550,
-    "name": "Lviv",
+    "id": 709930,
+    "name": "Dnipro",
     "cod": 200
 }
