@@ -13,7 +13,7 @@ class MainWindow(widgets.QMainWindow):
         super().__init__()
         
         self.setWindowFlags(core.Qt.WindowType.FramelessWindowHint)
-
+        self.COUNTER = 0
         window_width = 1200
         window_height = 828
 
@@ -31,6 +31,7 @@ class MainWindow(widgets.QMainWindow):
         
         content_container = widgets.QFrame(parent = self)
         content_container.setSizePolicy(widgets.QSizePolicy.Policy.Expanding, widgets.QSizePolicy.Policy.Expanding)
+        content_container.setObjectName("Content_container")
         content_layout = widgets.QVBoxLayout()
         
         content_layout.setSpacing(0)
@@ -75,10 +76,9 @@ class MainWindow(widgets.QMainWindow):
         center_widget_layout.addWidget(self.WEATHER_CONTAINER)
 
     def mousePressEvent(self, event: gui.QMouseEvent):
-        if event.button() == core.Qt.MouseButton.RightButton:
-          
-            print("Правая кнопка")
-    
+        if event.button() == core.Qt.MouseButton.LeftButton:
+           self.findChild(widgets.QLineEdit, "SEARCH_FIELD").DROP_DOWN_FRAME.hide()
+
     def keyPressEvent(self, event: gui.QKeyEvent):
         if event.key() == core.Qt.Key.Key_K:
             print(event.text())

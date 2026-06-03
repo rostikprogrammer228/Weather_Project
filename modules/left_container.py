@@ -13,6 +13,7 @@ class LeftContainer(widgets.QFrame):
         super().__init__(parent)
         self.COUNTER = 0
         
+        self.setObjectName("Left_container")
         
         self.setFixedSize(370, 828)
         
@@ -57,12 +58,12 @@ class LeftContainer(widgets.QFrame):
 
         scroll_area = widgets.QScrollArea(parent = frame)
         
-        scroll_frame = widgets.QFrame(parent = scroll_area)
+        self.scroll_frame = widgets.QFrame(parent = scroll_area)
         
-        scroll_frame_layout = widgets.QVBoxLayout()
-        scroll_frame.setLayout(scroll_frame_layout)
+        self.scroll_frame_layout = widgets.QVBoxLayout()
+        self.scroll_frame.setLayout(self.scroll_frame_layout)
         
-        scroll_frame_layout.setAlignment(core.Qt.AlignmentFlag.AlignTop)
+        self.scroll_frame_layout.setAlignment(core.Qt.AlignmentFlag.AlignTop)
         
         scroll_area.setVerticalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         
@@ -70,26 +71,40 @@ class LeftContainer(widgets.QFrame):
         scroll_area.setFixedSize(370, 730)
         scroll_area.setStyleSheet("background-color: transparent;")
         
-        scroll_area.setWidget(scroll_frame)
+        scroll_area.setWidget(self.scroll_frame)
         scroll_area.setWidgetResizable(True)
         
         leftcontainer_layout.addWidget(frame)
         
         
         
-        card1 = Cards(parent = scroll_frame,city_name = "Dnipro")
-        card10 = Cards(parent = scroll_frame,city_name = "New York")
        
-                
-        scroll_frame_layout.addWidget(card1, alignment = core.Qt.AlignmentFlag.AlignHCenter)    
-        scroll_frame_layout.addWidget(card10, alignment = core.Qt.AlignmentFlag.AlignHCenter)   
+   
     def change_button(self):
-        
+        our_content_container = self.window().findChild(widgets.QFrame, "Content_container")
         if self.COUNTER % 2 == 0:
             icon = gui.QIcon("media/title_bar/dark_theme.svg")
             self.CHANGE_THEME_BUTTON.setIcon(icon)
+            our_content_container.setStyleSheet("""
+            #Content_container {
+                background: qlineargradient(
+                    x1:0 y1:1,
+                    x2:1 y2:0,
+                    stop:0 #191970 stop:1 #8A2BE2
+                    );
+            }
+        """)
         else:
             icon = gui.QIcon("media/title_bar/light_theme.svg")
+            our_content_container.setStyleSheet("""
+            #Content_container {
+                background: qlineargradient(
+                    x1:0 y1:1,
+                    x2:1 y2:0,
+                    stop:0 #87CEFA stop:1 #FFDF56
+                    );
+            }
+        """)
             self.CHANGE_THEME_BUTTON.setIcon(icon)
         self.COUNTER += 1
     

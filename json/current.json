@@ -1,45 +1,46 @@
 {
     "coord": {
-        "lon": -74.006,
-        "lat": 40.7143
+        "lon": -124.1637,
+        "lat": 40.8021
     },
     "weather": [
         {
-            "id": 800,
-            "main": "Clear",
-            "description": "\u0447\u0438\u0441\u0442\u0435 \u043d\u0435\u0431\u043e",
-            "icon": "01d"
+            "id": 804,
+            "main": "Clouds",
+            "description": "\u0445\u043c\u0430\u0440\u043d\u043e",
+            "icon": "04n"
         }
     ],
     "base": "stations",
     "main": {
-        "temp": 22.71,
-        "feels_like": 21.98,
-        "temp_min": 21.08,
-        "temp_max": 24.45,
-        "pressure": 1021,
-        "humidity": 36,
-        "sea_level": 1021,
-        "grnd_level": 1020
+        "temp": 12.05,
+        "feels_like": 11.82,
+        "temp_min": 11.43,
+        "temp_max": 12.57,
+        "pressure": 1018,
+        "humidity": 96,
+        "sea_level": 1018,
+        "grnd_level": 1016
     },
     "visibility": 10000,
     "wind": {
-        "speed": 3.09,
-        "deg": 320
+        "speed": 0.98,
+        "deg": 77,
+        "gust": 1.03
     },
     "clouds": {
-        "all": 0
+        "all": 100
     },
-    "dt": 1780415788,
+    "dt": 1780485669,
     "sys": {
-        "type": 1,
-        "id": 4610,
+        "type": 2,
+        "id": 2007742,
         "country": "US",
-        "sunrise": 1780392411,
-        "sunset": 1780446091
+        "sunrise": 1780490806,
+        "sunset": 1780544594
     },
-    "timezone": -14400,
-    "id": 5128581,
-    "name": "New York",
+    "timezone": -25200,
+    "id": 5563397,
+    "name": "Eureka",
     "cod": 200
 }

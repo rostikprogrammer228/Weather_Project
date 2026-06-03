@@ -46,7 +46,7 @@ class SearchFrame(widgets.QFrame):
         self.clear_button.clicked.connect(self.hide_clear_button)
         
         
-
+    
         self.SEARCH_FRAME_LAYOUT.addWidget(self.SEARCH_LABEL, alignment = core.Qt.AlignmentFlag.AlignLeft and core.Qt.AlignmentFlag.AlignCenter)
         self.SEARCH_FRAME_LAYOUT.addWidget(self.search_field, alignment = core.Qt.AlignmentFlag.AlignRight)
         self.SEARCH_FRAME_LAYOUT.addWidget(self.CLEAR_BUTTON_FRAME, alignment = core.Qt.AlignmentFlag.AlignRight)

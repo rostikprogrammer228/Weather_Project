@@ -4,7 +4,7 @@ import PyQt6.QtGui as gui
 from utils import request,json_write
 from .horizontal_scroll import Horizontal_Scroll
 from .search_frame import SearchFrame
-
+from .cards import Cards
 
 
 class WeatherContainer(widgets.QFrame):
@@ -23,13 +23,13 @@ class WeatherContainer(widgets.QFrame):
         
         # В weather frame
         self.TOP_FRAME = widgets.QFrame(self)
-        self.TOP_FRAME.setFixedSize(788, 36)
+        self.TOP_FRAME.setFixedSize(790, 36)
         self.TOP_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
         self.WEATHER_CONTEINER_LAYOUT.addWidget(self.TOP_FRAME, alignment = core.Qt.AlignmentFlag.AlignHCenter)
         
         self.TOP_FRAME_LAYOUT = widgets.QHBoxLayout(self.TOP_FRAME)
         self.TOP_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
-        self.TOP_FRAME_LAYOUT.setSpacing(383)
+        self.TOP_FRAME_LAYOUT.setSpacing(278)
         self.TOP_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
         self.TOP_FRAME.setLayout(self.TOP_FRAME_LAYOUT)
         
@@ -62,8 +62,61 @@ class WeatherContainer(widgets.QFrame):
         
         
         # В TOP_FRAME
+        self.TOP_ADD_SEARCH_FRAME = widgets.QFrame(self.TOP_FRAME)
+        self.TOP_ADD_SEARCH_FRAME.setFixedSize(368, 36)
+        self.TOP_ADD_SEARCH_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        self.TOP_FRAME_LAYOUT.addWidget(self.TOP_ADD_SEARCH_FRAME)
+        
+        self.TOP_ADD_SEARCH_FRAME_LAYOUT = widgets.QHBoxLayout(self.TOP_ADD_SEARCH_FRAME)
+        self.TOP_ADD_SEARCH_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
+        self.TOP_ADD_SEARCH_FRAME_LAYOUT.setSpacing(10)
+        self.TOP_ADD_SEARCH_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
+
+        self.TOP_ADD_SEARCH_FRAME.setLayout(self.TOP_ADD_SEARCH_FRAME_LAYOUT)
+        
+        self.ADD_FRAME = widgets.QFrame(self.TOP_ADD_SEARCH_FRAME)
+        self.ADD_FRAME.setStyleSheet("background-color: transparent; border-radius: 4px;")
+        self.ADD_FRAME.setFixedSize(97, 36)
+        
+        self.ADD_FRAME_LAYOUT = widgets.QHBoxLayout(self.ADD_FRAME)
+        self.ADD_FRAME_LAYOUT.setContentsMargins(8,7,8,7)
+        self.ADD_FRAME_LAYOUT.setSpacing(7)
+        self.ADD_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
+        
+        self.ADD_FRAME.setLayout(self.ADD_FRAME_LAYOUT)
+        
+        self.ADD_BUTTON = widgets.QPushButton(self.ADD_FRAME)
+        self.ADD_BUTTON.setStyleSheet("background-color: rgba(0, 0, 0, 0.2);")
+        self.ADD_BUTTON.setFixedSize(97,36)
+        self.ADD_BUTTON.clicked.connect(self.add_city_card)
+        
+        
+        
+        self.ADD_BUTTON_ICON = widgets.QLabel(self.ADD_FRAME)
+        self.ADD_BUTTON_ICON.setFixedSize(16,22)
+        
+        add_pixmap = gui.QPixmap(f"media/title_bar/additional_elements/plus_circle.png")
+        if not add_pixmap.isNull():
+            scaled_pixmap = add_pixmap.scaled(16, 16, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
+            self.ADD_BUTTON_ICON.setPixmap(scaled_pixmap)
+        
+        self.ADD_BUTTON_ICON.setStyleSheet("background-color: transparent; border-radius: 0px;")
+        self.ADD_BUTTON_ICON.setAttribute(core.Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+        self.ADD_FRAME_LAYOUT.addWidget(self.ADD_BUTTON_ICON, alignment = core.Qt.AlignmentFlag.AlignLeft)
+        
+        self.ADD_BUTTON_LABEL = widgets.QLabel(self.ADD_FRAME, text = "Додати")
+        self.ADD_BUTTON_LABEL.setFixedSize(58, 22)
+        self.ADD_BUTTON_LABEL.setStyleSheet("color: white; font-size: 17px; border-radius: 0px;background-color: transparent; font-family: 'Roboto';font-weight: 400;")
+        self.ADD_BUTTON_LABEL.setAttribute(core.Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
+        self.ADD_FRAME_LAYOUT.addWidget(self.ADD_BUTTON_LABEL, alignment = core.Qt.AlignmentFlag.AlignRight)
+        
+        self.ADD_BUTTON.hide()
+        self.ADD_BUTTON_LABEL.hide()
+        self.ADD_BUTTON_ICON.hide()
+        
         self.SEARCH_FRAME = SearchFrame(self.TOP_FRAME)
-        self.TOP_FRAME_LAYOUT.addWidget(self.SEARCH_FRAME, alignment = core.Qt.AlignmentFlag.AlignRight)
+        self.TOP_ADD_SEARCH_FRAME_LAYOUT.addWidget(self.ADD_FRAME, alignment = core.Qt.AlignmentFlag.AlignLeft)
+        self.TOP_ADD_SEARCH_FRAME_LAYOUT.addWidget(self.SEARCH_FRAME, alignment = core.Qt.AlignmentFlag.AlignRight)
         
         
         
@@ -439,6 +492,22 @@ class WeatherContainer(widgets.QFrame):
     def scroll_right(self):
         hbar = self.DAY_WEATHER_SCROLL_AREA.horizontalScrollBar()
         hbar.setValue(hbar.maximum())
+    
+    def add_city_card(self):
+        
+        our_search_field = self.window().findChild(widgets.QLineEdit, "SEARCH_FIELD")
+        our_left_container = self.window().findChild(widgets.QFrame, "Left_container")
+        try:    
+            city_card = Cards(parent = our_left_container.scroll_frame, city_name = our_search_field.text())
+            our_left_container.scroll_frame_layout.addWidget(city_card, alignment = core.Qt.AlignmentFlag.AlignHCenter)
+            city_card.select()
+            our_search_field.clear()
+            self.ADD_BUTTON.hide()
+            self.ADD_BUTTON_LABEL.hide()
+            self.ADD_BUTTON_ICON.hide()
+        except Exception as e:
+            print(f"Error adding city card: {e}")
+    
         
     # def open_modal(self):
     #     # Получаем главное окно (объект)
@@ -487,12 +556,4 @@ class WeatherContainer(widgets.QFrame):
         
     #     web_engine_view.setHtml(html)
 
-
-# 🔘 Створюємо контейнер з прогнозом погоди до кінця дня. Він має бути із можливістю горизонтального скролу
-# 🔘 Налаштовуємо контейнер з діаграмою температури в обраному місті
-# 🔘 Висота кожного стовпцю діаграми має залежати від температури в отриману годину прогнозу
-# 🔘 Налаштовуємо оновлення даних в контейнерах, після обрання міста. Дані отримуємо за допомогою API
-
-# 📌 Кнопки < та > мають переміщувати у початок контейнеру зі скролом та у кінець відповідно
-# 📌 Для картки з даними за окрему годину, в горизонтальному контейнері, рекомендовано створити окремий клас
-# 📌 Позначки температури (-10° до 25°) мають бути фіксованими
+    

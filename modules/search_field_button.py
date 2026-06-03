@@ -10,8 +10,5 @@ class SearchFieldCityButton(widgets.QPushButton):
         
         self.setText(text)
         self.setStyleSheet("background-color: transparent; border: none; color: white; font-family: 'Roboto'; font-weight: 400; font-size: 17px; text-align: left;")
-        self.setFixedHeight(20)
+        self.setFixedSize(261, 30)
             
-                        
-                        
-                        

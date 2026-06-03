@@ -14,8 +14,8 @@ class Cards(widgets.QFrame):
     def __init__(self, parent, city_name):
         self.CITY_NAME = city_name
         super().__init__(parent)
-        
         self.REQUEST_DATA = request(self.CITY_NAME, "current")
+        
         
         self.data_time()
         self.SELECTED = False
@@ -96,18 +96,18 @@ class Cards(widgets.QFrame):
         self.SUNSET_TIME = datetime.fromtimestamp(self.sunset + self.day_request_data["city"]["timezone"], timezone.utc)
         
 
-    def mousePressEvent(self, event: gui.QMouseEvent):
-        if event.button() == core.Qt.MouseButton.LeftButton and self.SELECTED == False:
-            self.REQUEST_DATA = request(self.CITY_NAME, "current")
-            self.day_request_data = request(self.CITY_NAME, "daily")
-            
-            weather_container = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
-            
-            clear_layout(weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT)
-            clear_layout(weather_container.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT)
-            clear_layout(weather_container.FORECAST_DIAGRAM_ITSELF_LAYOUT)
-            
-            for index in range(len(self.day_request_data["list"])):
+    def select(self):
+        
+        self.REQUEST_DATA = request(self.CITY_NAME, "current")
+        self.day_request_data = request(self.CITY_NAME, "daily")
+        
+        weather_container = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
+        
+        clear_layout(weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT)
+        clear_layout(weather_container.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT)
+        clear_layout(weather_container.FORECAST_DIAGRAM_ITSELF_LAYOUT)
+        # Цикл для получения данных о погоде в течение дня и отображения их в виде диаграммы и скролла с часами, температурой и иконкой погоды
+        for index in range(len(self.day_request_data["list"])):
                 hour_data = self.day_request_data["list"][index]
                 hour_temp = hour_data["main"]["temp"]
                 
@@ -123,7 +123,10 @@ class Cards(widgets.QFrame):
                     weather_container.FORECAST_DIAGRAM_ICON_FRAME_LAYOUT.addWidget(weather_forecast_icon, alignment = core.Qt.AlignmentFlag.AlignCenter)
                     
                     for i in range(3):
-                        height = 3 * int(hour_temp)
+                        if hour_temp <= -10:
+                            height = 0
+                        else:  
+                            height = 3 * int(hour_temp +10)
                         diagramma = widgets.QFrame(parent = weather_container.FORECAST_DIAGRAM_ITSELF_FRAME)
                         diagramma.setFixedWidth(8)
                         diagramma.setFixedHeight(height)
@@ -168,11 +171,6 @@ class Cards(widgets.QFrame):
                     
                 vertical_card.TEMPERATURE_LABEL.setText(f"{int(hour_temp)}°")
                 weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT.addWidget(vertical_card)
-                # print(f"city - {self.day_request_data["city"]["name"]}")
-                # print(f"sunrise - {self.SUNRISE_TIME.hour}")
-                # print(f"sunset - {self.SUNSET_TIME.hour}")
-                # print(f"hour - {hour_time}")
-                # print(f"next_hour - {next_hour}")
                 
                 if next_hour is not None and self.SUNRISE_TIME.hour >= hour_time and self.SUNRISE_TIME.hour < next_hour:
                     sunrise_card = Sun_Move_Card(parent = weather_container.DAY_WEATHER_SCROLL_FRAME)
@@ -210,55 +208,54 @@ class Cards(widgets.QFrame):
                 self.TEXT_LABEL = None
             
                 
-            
-            json_write("current.json", self.REQUEST_DATA)
-            json_write("daily.json", self.day_request_data)
-            self.data_time()
-
-            
-            
-            # city  
-            weather_container.LEFT_CITY_LABEL.setText(self.REQUEST_DATA["name"])
+        weather_container.LEFT_CITY_LABEL.setText(self.REQUEST_DATA["name"])
             # temperature
-            weather_container.LEFT_WEATHER_LABEL.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}°")
+        weather_container.LEFT_WEATHER_LABEL.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}°")
             
             # description
-            weather_container.LEFT_DESCRIPTION_LABEL1.setText(self.REQUEST_DATA["weather"][0]["description"].capitalize())
+        weather_container.LEFT_DESCRIPTION_LABEL1.setText(self.REQUEST_DATA["weather"][0]["description"].capitalize())
             # max min temp
-            weather_container.LEFT_DESCRIPTION_LABEL2.setText(f"Макс.:{int(self.REQUEST_DATA["main"]["temp_max"])}°, Мін.:{int(self.REQUEST_DATA["main"]["temp_min"])}°")
+        weather_container.LEFT_DESCRIPTION_LABEL2.setText(f"Макс.:{int(self.REQUEST_DATA["main"]["temp_max"])}°, Мін.:{int(self.REQUEST_DATA["main"]["temp_min"])}°")
             
             
-            pixmap = gui.QPixmap(f"media/title_bar/weather_icons/{self.REQUEST_DATA["weather"][0]["icon"]}.png")
+        pixmap = gui.QPixmap(f"media/title_bar/weather_icons/{self.REQUEST_DATA["weather"][0]["icon"]}.png")
 
-            if not pixmap.isNull():
-                scaled = pixmap.scaled(weather_container.LEFT_WEATHER_ICON_SIZE, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
-                weather_container.LEFT_WEATHER_ICON.setPixmap(scaled)
+        if not pixmap.isNull():
+            scaled = pixmap.scaled(weather_container.LEFT_WEATHER_ICON_SIZE, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
+            weather_container.LEFT_WEATHER_ICON.setPixmap(scaled)
+            # Запись в правую часть контейнера погоды данных о погоде с запроса API при каждом клике на карточку
+        weather_container.RIGHT_DATA_LABEL1.setText(self.DAY_STR.capitalize())
+            
+        weather_container.RIGHT_DATA_LABEL2.setText(self.DATE)
+            
+        weather_container.RIGHT_CLOCK_LABEL.setText(self.TIME_STR)
+            
+        weather_container.RIGHT_CLOCK_FRAME.setPixmap(gui.QPixmap(f"media/title_bar/clock.svg"))
+            
+            
+            # Обновление данных на карточке, которая была выбрана
+        self.FRAME1_LABEL2.setText(self.TIME_STR)
+        self.FRAME1_LABEL3.setText(self.REQUEST_DATA["weather"][0]["description"].capitalize())
+        self.FRAME2_LABEL1.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}°")
+        self.FRAME2_LABEL2.setText(f"Макс.:{int(self.REQUEST_DATA["main"]["temp_max"])}°, Мін.:{int(self.REQUEST_DATA["main"]["temp_min"])}°")
+            
+        for card in Cards.CARDS_LIST:
+            if card.SELECTED:
+                card.setStyleSheet("background-color: transparent; border-radius:0px;border-bottom: 1px solid #859892;")
+                card.SELECTED = False
 
-            weather_container.RIGHT_DATA_LABEL1.setText(self.DAY_STR.capitalize())
+        self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 8px;border-bottom: 1px solid #859892;")
+        self.SELECTED = True
             
-            weather_container.RIGHT_DATA_LABEL2.setText(self.DATE)
-            
-            weather_container.RIGHT_CLOCK_LABEL.setText(self.TIME_STR)
-            
-            weather_container.RIGHT_CLOCK_FRAME.setPixmap(gui.QPixmap(f"media/title_bar/clock.svg"))
-            
-            
-            
-            self.FRAME1_LABEL2.setText(self.TIME_STR)
-            self.FRAME1_LABEL3.setText(self.REQUEST_DATA["weather"][0]["description"].capitalize())
-            self.FRAME2_LABEL1.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}°")
-            self.FRAME2_LABEL2.setText(f"Макс.:{int(self.REQUEST_DATA["main"]["temp_max"])}°, Мін.:{int(self.REQUEST_DATA["main"]["temp_min"])}°")
-            
-            for card in Cards.CARDS_LIST:
-                if card.SELECTED:
-                    card.setStyleSheet("background-color: transparent; border-radius:0px;border-bottom: 1px solid #859892;")
-                    card.SELECTED = False
 
-            self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 8px;border-bottom: 1px solid #859892;")
-            self.SELECTED = True
-            
-            
-            
+    def mousePressEvent(self, event: gui.QMouseEvent):
+        if event.button() == core.Qt.MouseButton.LeftButton :
+            self.window().findChild(widgets.QLineEdit, "SEARCH_FIELD").DROP_DOWN_FRAME.hide()
+        if event.button() == core.Qt.MouseButton.LeftButton and self.SELECTED == False:
+    
+            self.select()
+        
+
             
             
            # print(f"city - {self.DAY_REQUEST_DATA["city"]["name"]}")
