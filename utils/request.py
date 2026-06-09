@@ -11,3 +11,5 @@ def request(city_name,api_request):
         response = requests.get(f"https://countriesnow.space/api/v0.1/countries")
     data = response.json()
     return data
+
+list1 = (("Monday","Понеділок"),)

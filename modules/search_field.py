@@ -23,14 +23,20 @@ class SearchField(widgets.QLineEdit):
         
         
         self.DROP_DOWN_SCROLL_AREA= widgets.QScrollArea(parent = self.DROP_DOWN_FRAME)
-        # Make the scroll area transparent so the parent's rounded corners are visible
+        self.DROP_DOWN_SCROLL_AREA.setFixedSize(261, 200)
+        self.DROP_DOWN_SCROLL_AREA.setWidgetResizable(True)
+        self.DROP_DOWN_SCROLL_AREA.setVerticalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.DROP_DOWN_SCROLL_AREA.setHorizontalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        
         self.DROP_DOWN_SCROLL_AREA.setStyleSheet("background-color: transparent; border: none;")
         
-        # Ensure the viewport itself is transparent
+       
         
         
         self.DROP_DOWN_SCROLL_AREA_FRAME = widgets.QFrame(parent = self.DROP_DOWN_SCROLL_AREA)
         self.DROP_DOWN_SCROLL_AREA_FRAME.setStyleSheet("background-color: transparent; border-radius: 10px;")
+        self.DROP_DOWN_SCROLL_AREA.setWidget(self.DROP_DOWN_SCROLL_AREA_FRAME)
+        
         
         self.DROP_DOWN_LAYOUT = widgets.QVBoxLayout(self.DROP_DOWN_SCROLL_AREA_FRAME)
         self.DROP_DOWN_LAYOUT.setContentsMargins(7,5,0,5)
@@ -41,13 +47,7 @@ class SearchField(widgets.QLineEdit):
         self.DROP_DOWN_SCROLL_AREA_FRAME.setLayout(self.DROP_DOWN_LAYOUT)
         
         
-        
-        self.DROP_DOWN_SCROLL_AREA.setWidget(self.DROP_DOWN_SCROLL_AREA_FRAME)
-        self.DROP_DOWN_SCROLL_AREA.setFixedSize(261, 200)
-        self.DROP_DOWN_SCROLL_AREA.setWidgetResizable(True)
-        
-        self.DROP_DOWN_SCROLL_AREA.setVerticalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.DROP_DOWN_SCROLL_AREA.setHorizontalScrollBarPolicy(core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+       
         
         self.setStyleSheet("background-color: transparent; border-radius: 0px; color: white; font-family: 'Roboto'; font-weight: 400; font-size: 17px;")
         
@@ -111,7 +111,7 @@ class SearchField(widgets.QLineEdit):
                             if self.CITY_SEARCHED_COUNTER > 15:
                                 break
                             city_name = city
-                            city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=city_name)
+                            city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=city_name, width = 261,height = 30)
                             city_button.clicked.connect(lambda clicked, name=city_name: self.city_chosen(name))
                             self.DROP_DOWN_LAYOUT.addWidget(city_button)
                     if self.CITY_SEARCHED_COUNTER >= 15:

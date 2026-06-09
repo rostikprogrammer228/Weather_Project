@@ -1,46 +1,44 @@
 {
     "coord": {
-        "lon": -124.1637,
-        "lat": 40.8021
+        "lon": 4.3722,
+        "lat": 36.7447
     },
     "weather": [
         {
-            "id": 804,
+            "id": 802,
             "main": "Clouds",
-            "description": "\u0445\u043c\u0430\u0440\u043d\u043e",
-            "icon": "04n"
+            "description": "уривчасті хмари",
+            "icon": "03d"
         }
     ],
     "base": "stations",
     "main": {
-        "temp": 12.05,
-        "feels_like": 11.82,
-        "temp_min": 11.43,
-        "temp_max": 12.57,
-        "pressure": 1018,
-        "humidity": 96,
-        "sea_level": 1018,
-        "grnd_level": 1016
+        "temp": 28.24,
+        "feels_like": 29.24,
+        "temp_min": 28.24,
+        "temp_max": 28.24,
+        "pressure": 1014,
+        "humidity": 55,
+        "sea_level": 1014,
+        "grnd_level": 952
     },
     "visibility": 10000,
     "wind": {
-        "speed": 0.98,
-        "deg": 77,
-        "gust": 1.03
+        "speed": 2.77,
+        "deg": 359,
+        "gust": 1.96
     },
     "clouds": {
-        "all": 100
+        "all": 42
     },
-    "dt": 1780485669,
+    "dt": 1781023953,
     "sys": {
-        "type": 2,
-        "id": 2007742,
-        "country": "US",
-        "sunrise": 1780490806,
-        "sunset": 1780544594
+        "country": "DZ",
+        "sunrise": 1780979008,
+        "sunset": 1781031614
     },
-    "timezone": -25200,
-    "id": 5563397,
-    "name": "Eureka",
+    "timezone": 3600,
+    "id": 2506043,
+    "name": "Azazga",
     "cod": 200
 }

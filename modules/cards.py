@@ -15,7 +15,7 @@ class Cards(widgets.QFrame):
         self.CITY_NAME = city_name
         super().__init__(parent)
         self.REQUEST_DATA = request(self.CITY_NAME, "current")
-        
+        json_write("current.json",self.REQUEST_DATA)
         
         self.data_time()
         self.SELECTED = False
@@ -24,10 +24,10 @@ class Cards(widgets.QFrame):
         self.setFixedSize(330, 98)
         
         self.CARD_LAYOUT = widgets.QHBoxLayout()
-        self.CARD_LAYOUT.setContentsMargins(0,0,0,0)
+        self.CARD_LAYOUT.setContentsMargins(8,8,8,8)
         
         self.setLayout(self.CARD_LAYOUT)
-
+        # °
         self.FRAME1 = widgets.QFrame(parent = self)
         self.FRAME1.setFixedSize(200, 82)
         self.FRAME1.setStyleSheet("border: none; background-color: transparent;")
@@ -59,17 +59,33 @@ class Cards(widgets.QFrame):
         self.FRAME2_LAYOUT.setContentsMargins(0,0,0,0)
         self.FRAME2.setLayout(self.FRAME2_LAYOUT)
         
-        self.FRAME2_LABEL1 = widgets.QLabel(text = f"{int(self.REQUEST_DATA["main"]["temp"])}°", parent = self.FRAME2)
-        self.FRAME2_LABEL1.setStyleSheet("font-size: 44px; font-family: 'Roboto'; font-weight: 500; color: rgba(255, 255, 255, 0.8);")
-        self.FRAME2_LABEL1.setFixedSize(67,52 )
+        self.FRAME22 = widgets.QFrame(parent = self.FRAME2)
+        self.FRAME22.setFixedSize(85,52)
+        self.FRAME22.setStyleSheet("border: none; background-color: transparent;")
         
+        self.FRAME22_LAYOUT = widgets.QHBoxLayout()
+        self.FRAME22_LAYOUT.setContentsMargins(0,0,0,0)
+        self.FRAME22_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
+        self.FRAME22_LAYOUT.setSpacing(3)
+        self.FRAME22.setLayout(self.FRAME22_LAYOUT)
+        
+        self.FRAME2_LABEL1 = widgets.QLabel(text = f"{int(self.REQUEST_DATA["main"]["temp"])}", parent = self.FRAME22)
+        self.FRAME2_LABEL1.setStyleSheet("font-size: 44px; font-family: 'Roboto'; font-weight: 500; color: rgba(255, 255, 255, 0.8);")
+        self.FRAME2_LABEL1.setFixedHeight(52)
+        self.FRAME22_LAYOUT.addWidget(self.FRAME2_LABEL1, alignment= core.Qt.AlignmentFlag.AlignRight and core.Qt.AlignmentFlag.AlignTop)
+        
+        self.FRAME2_LABEL11 = widgets.QLabel(text = "°", parent = self.FRAME22)
+        self.FRAME2_LABEL11.setStyleSheet("font-size: 39px; font-family: 'Roboto'; font-weight: 500; color: rgba(255, 255, 255, 0.8);")
+        self.FRAME2_LABEL11.setFixedHeight(44)
+        self.FRAME2_LABEL11.setAlignment(core.Qt.AlignmentFlag.AlignBottom)
+        self.FRAME22_LAYOUT.addWidget(self.FRAME2_LABEL11, alignment= core.Qt.AlignmentFlag.AlignLeft )
         
         self.FRAME2_LABEL2 = widgets.QLabel(text = f"Макс.:{int(self.REQUEST_DATA["main"]["temp_max"])}°, Мін.:{int(self.REQUEST_DATA["main"]["temp_min"])}°", parent = self.FRAME2)
         self.FRAME2_LABEL2.setStyleSheet("font-size: 12px; font-family: 'Roboto'; font-weight: 500; color: rgba(255, 255, 255, 0.8);")
         self.FRAME2_LABEL2.setFixedSize(110,14)
         self.FRAME2_LABEL2.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
         
-        self.FRAME2_LAYOUT.addWidget(self.FRAME2_LABEL1, alignment = core.Qt.AlignmentFlag.AlignRight)
+        self.FRAME2_LAYOUT.addWidget(self.FRAME22, alignment = core.Qt.AlignmentFlag.AlignRight)
         self.FRAME2_LAYOUT.addWidget(self.FRAME2_LABEL2)
         
         self.CARD_LAYOUT.addWidget(self.FRAME1)
@@ -95,12 +111,19 @@ class Cards(widgets.QFrame):
         self.sunset = self.REQUEST_DATA["sys"]["sunset"] 
         self.SUNSET_TIME = datetime.fromtimestamp(self.sunset + self.day_request_data["city"]["timezone"], timezone.utc)
         
-
+    def week_day_translate(self)  :   
+        days = (("Monday","Понеділок"),("Tuesday","Вівторок"),("Wednesday","Середа"),("Thursday","Четвер"),("Friday","П'ятниця"),("Saturday","Субота"),("Sunday","Неділя")) 
+        for day in days:
+            if day[0].lower() == self.DAY_STR.lower():
+                self.UA_DAY_STR = day[1].capitalize()
+        return self.UA_DAY_STR
     def select(self):
         
         self.REQUEST_DATA = request(self.CITY_NAME, "current")
         self.day_request_data = request(self.CITY_NAME, "daily")
-        
+        self.data_time()
+        self.week_day_translate()
+    
         weather_container = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
         
         clear_layout(weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT)
@@ -210,8 +233,9 @@ class Cards(widgets.QFrame):
                 
         weather_container.LEFT_CITY_LABEL.setText(self.REQUEST_DATA["name"])
             # temperature
-        weather_container.LEFT_WEATHER_LABEL.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}°")
+        weather_container.LEFT_WEATHER_LABEL.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}")
             
+        weather_container.LEFT_WEATHER_LABEL11.setText("°")
             # description
         weather_container.LEFT_DESCRIPTION_LABEL1.setText(self.REQUEST_DATA["weather"][0]["description"].capitalize())
             # max min temp
@@ -224,7 +248,7 @@ class Cards(widgets.QFrame):
             scaled = pixmap.scaled(weather_container.LEFT_WEATHER_ICON_SIZE, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
             weather_container.LEFT_WEATHER_ICON.setPixmap(scaled)
             # Запись в правую часть контейнера погоды данных о погоде с запроса API при каждом клике на карточку
-        weather_container.RIGHT_DATA_LABEL1.setText(self.DAY_STR.capitalize())
+        weather_container.RIGHT_DATA_LABEL1.setText(self.UA_DAY_STR)
             
         weather_container.RIGHT_DATA_LABEL2.setText(self.DATE)
             
@@ -236,7 +260,7 @@ class Cards(widgets.QFrame):
             # Обновление данных на карточке, которая была выбрана
         self.FRAME1_LABEL2.setText(self.TIME_STR)
         self.FRAME1_LABEL3.setText(self.REQUEST_DATA["weather"][0]["description"].capitalize())
-        self.FRAME2_LABEL1.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}°")
+        self.FRAME2_LABEL1.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}")
         self.FRAME2_LABEL2.setText(f"Макс.:{int(self.REQUEST_DATA["main"]["temp_max"])}°, Мін.:{int(self.REQUEST_DATA["main"]["temp_min"])}°")
             
         for card in Cards.CARDS_LIST:
@@ -247,22 +271,9 @@ class Cards(widgets.QFrame):
         self.setStyleSheet("background-color: rgba(0, 0, 0, 0.3); border-radius: 8px;border-bottom: 1px solid #859892;")
         self.SELECTED = True
             
-
     def mousePressEvent(self, event: gui.QMouseEvent):
         if event.button() == core.Qt.MouseButton.LeftButton :
             self.window().findChild(widgets.QLineEdit, "SEARCH_FIELD").DROP_DOWN_FRAME.hide()
         if event.button() == core.Qt.MouseButton.LeftButton and self.SELECTED == False:
     
             self.select()
-        
-
-            
-            
-           # print(f"city - {self.DAY_REQUEST_DATA["city"]["name"]}")
-                # print(f"hour_data - {self.HOUR_TIME}")
-                # print(f"data - {datetime.fromtimestamp(self.DAY_REQUEST_DATA["list"][index]["dt"],timezone.utc).hour + self.DAY_REQUEST_DATA["city"]["timezone"] // 3600} ")
-                # print(f"index - {index} ")
-                # print(f"timezone - {self.DAY_REQUEST_DATA["city"]["timezone"]} ")
-                # print(f"city - {self.DAY_REQUEST_DATA["city"]["name"]}")
-                # print(f"temperature - {self.DAY_REQUEST_DATA["list"][index]["main"]["temp"]}")
-                # print(f"hour_data - {hour_data["main"]["temp"]}")

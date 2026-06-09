@@ -5,13 +5,13 @@ from utils import request,json_write
 from .horizontal_scroll import Horizontal_Scroll
 from .search_frame import SearchFrame
 from .cards import Cards
-
+from .modal import ModalWindow
 
 class WeatherContainer(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
         
-        
+        self.MODAL_WINDOW = ModalWindow(parent = self.window())
         self.setFixedSize(828, 800)
         self.setObjectName("WEATHER_CONTAINER")
         self.WEATHER_CONTEINER_LAYOUT = widgets.QVBoxLayout(self)
@@ -48,8 +48,8 @@ class WeatherContainer(widgets.QFrame):
         # В TOP_SETTINGS_FRAME
         self.TOP_SETTINGS_FRAME_BUTTON = widgets.QPushButton(parent = self.TOP_SETTINGS_FRAME, icon = gui.QIcon("media/title_bar/additional_elements/settings.png"))
         self.TOP_SETTINGS_FRAME_BUTTON.setFixedSize(36,36)
-        self.TOP_SETTINGS_FRAME_BUTTON.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 4px")
-
+        self.TOP_SETTINGS_FRAME_BUTTON.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 4px;")
+        self.TOP_SETTINGS_FRAME_BUTTON.clicked.connect(self.MODAL_WINDOW.show)
         self.TOP_SETTINGS_FRAME_LAYOUT.addWidget(self.TOP_SETTINGS_FRAME_BUTTON, alignment = core.Qt.AlignmentFlag.AlignLeft)   
         
         # В TOP_SETTINGS_FRAME
@@ -118,26 +118,6 @@ class WeatherContainer(widgets.QFrame):
         self.TOP_ADD_SEARCH_FRAME_LAYOUT.addWidget(self.ADD_FRAME, alignment = core.Qt.AlignmentFlag.AlignLeft)
         self.TOP_ADD_SEARCH_FRAME_LAYOUT.addWidget(self.SEARCH_FRAME, alignment = core.Qt.AlignmentFlag.AlignRight)
         
-        
-        
-        
-        # 🔘 Працюємо над верхньою частиною фрейму з контентом застосунку
-        # 🔘 Додаємо кнопку “Налаштування”
-        # 🔘 Додаємо поле пошуку
-        # 🔘 Отримуємо список міст за допомогою CountriesNow API та зберігаємо у JSON-файлі
-        # 🔘 Створюємо віджет власного випадаючого меню з результатами пошуку
-        # 🔘 Налаштовуємо алгоритм пошуку міст за введеними літерами. Знайдені міста мають відображатись у випадаючому меню
-        # 🔘 Після обрання міста у випадаючому меню відображаємо кнопку “Додати” біля поля пошуку
-        # 🔘 По натисканню кнопки “Додати” додаємо картку з новим містом
-        # 🔘 Додаємо кнопку очищення поля пошуку та налаштовуємо очищення поля після її натискання
-
-        # 📌 В випадаючому меню має відображатись максимум 15 міст
-        # 📌 Після додання міста його картка має автоматично обратись, а дані міста - відображатись в основному контейнері з інформацією
-
-        
-        
-        
-        
         # Внутри weather frame
         self.MAIN_FRAME = widgets.QFrame(self)
         self.MAIN_FRAME.setFixedSize(788, 677)
@@ -205,10 +185,28 @@ class WeatherContainer(widgets.QFrame):
         self.LEFT_WEATHER_ICON.setScaledContents(False)
         self.LEFT_WEATHER_LAYOUT.addWidget(self.LEFT_WEATHER_ICON)
         # Внутри left weather frame
-        self.LEFT_WEATHER_LABEL = widgets.QLabel(self.LEFT_WEATHER_FRAME)
-        self.LEFT_WEATHER_LABEL.setFixedSize(113, 87)
+        
+        self.LEFT_WEATHER_LABLE_FRAME = widgets.QFrame(self.LEFT_WEATHER_FRAME)
+        self.LEFT_WEATHER_LABLE_FRAME.setFixedSize(113, 87)
+        self.LEFT_WEATHER_LAYOUT.addWidget(self.LEFT_WEATHER_LABLE_FRAME)
+        
+        self.LEFT_WEATHER_LABLE_LAYOUT = widgets.QHBoxLayout()
+        self.LEFT_WEATHER_LABLE_LAYOUT.setContentsMargins(0,0,0,0)
+        self.LEFT_WEATHER_LABLE_LAYOUT.setSpacing(7)
+        self.LEFT_WEATHER_LABLE_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignCenter)
+        self.LEFT_WEATHER_LABLE_FRAME.setLayout(self.LEFT_WEATHER_LABLE_LAYOUT)
+        
+        self.LEFT_WEATHER_LABEL = widgets.QLabel(self.LEFT_WEATHER_LABLE_FRAME)
         self.LEFT_WEATHER_LABEL.setStyleSheet("color: white; font-size: 74px;border-radius: 0px;background-color: transparent;font-family: 'Roboto';font-weight: 500;")
-        self.LEFT_WEATHER_LAYOUT.addWidget(self.LEFT_WEATHER_LABEL)
+        self.LEFT_WEATHER_LABEL.setFixedSize(80, 87)
+        self.LEFT_WEATHER_LABEL.setAlignment(core.Qt.AlignmentFlag.AlignRight | core.Qt.AlignmentFlag.AlignTop)
+        self.LEFT_WEATHER_LABLE_LAYOUT.addWidget(self.LEFT_WEATHER_LABEL)
+
+        self.LEFT_WEATHER_LABEL11 = widgets.QLabel(self.LEFT_WEATHER_LABLE_FRAME)
+        self.LEFT_WEATHER_LABEL11.setFixedSize(25, 65)
+        self.LEFT_WEATHER_LABEL11.setStyleSheet("color: white; font-size: 60px;border-radius: 0px;background-color: transparent;font-family: 'Roboto';font-weight: 500;")
+        self.LEFT_WEATHER_LABEL11.setAlignment(core.Qt.AlignmentFlag.AlignBottom)
+        self.LEFT_WEATHER_LABLE_LAYOUT.addWidget(self.LEFT_WEATHER_LABEL11)
 
         # Внутри left moment weather frame
         self.LEFT_DESCRIPTION_FRAME = widgets.QFrame(self.LEFT_MOMENT_FRAME)
@@ -506,9 +504,9 @@ class WeatherContainer(widgets.QFrame):
             self.ADD_BUTTON_LABEL.hide()
             self.ADD_BUTTON_ICON.hide()
         except Exception as e:
-            print(f"Error adding city card: {e}")
+            print(e)
     
-        
+    
     # def open_modal(self):
     #     # Получаем главное окно (объект)
     #     main_window = self.window()

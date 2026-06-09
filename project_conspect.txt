@@ -48,4 +48,22 @@ datetime.fromtimestamp(dt,timezone.utc).hour + timezone // 3600 - где fromtim
 enumerate() - она возвращает и пару (индекс, значение)
 
 
-метод toscroll
+
+
+
+
+
+
+
+
+        web_engine_view = WebEngine.QWebEngineView(parent = self.SETTINGS_CONTEINER_RIGHT_TOP_FRAME)
+        web_engine_view.setStyleSheet("border-radius: 12px;")
+        web_engine_view.setFixedSize(289,256)
+        # Apply rounded mask so the web content is clipped to rounded corners
+        radius = 12.0
+        rect = core.QRectF(0.0, 0.0, 289.0, 256.0)
+        path = gui.QPainterPath()
+        path.addRoundedRect(rect, radius, radius)
+        region = gui.QRegion(path.toFillPolygon().toPolygon())
+        web_engine_view.setMask(region)
+        self.SETTINGS_CONTEINER_RIGHT_TOP_FRAME_LAYOUT.addWidget(web_engine_view)
