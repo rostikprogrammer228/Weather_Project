@@ -6,14 +6,17 @@ import folium
 import io
 from utils import clear_layout
 
-from .modal_city_menu import ModalCityMenu
-from .modal_country_menu import ModalCountryMenu
+from .modal_tools.modal_city_menu import ModalCityMenu
+from .modal_tools.modal_country_menu import ModalCountryMenu
+from .modal_tools.city_lables import CityListLable
+
 class SearchCity(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.CHOOSED = False
         self.MODAL_WINDOW = self.window().findChild(widgets.QWidget,"MODAL_WINDOW")
-        
+        self.WEATHER_CONTAINER = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
+        self.CARD = self.window().findChild(widgets.QFrame, "CARD")
         self.setObjectName("SEARCHCITY")
         
         self.setFixedSize(158,35)
@@ -29,7 +32,7 @@ class SearchCity(widgets.QFrame):
         
         
         
-       
+        
     def create_frame(self):
         self.CHOOSED = True
         self.SETTINGS_LAYOUT = self.MODAL_WINDOW.SETTINGS_CONTEINER_RIGHT_LAYOUT
@@ -79,7 +82,7 @@ class SearchCity(widgets.QFrame):
         self.SEARCH_CHOOSING_LAYOUT.setContentsMargins(0,0,0,0)
         self.SEARCH_CHOOSING_LAYOUT.setSpacing(16)
         
-       
+        
         
         self.COUNTRY_CHOOSING_FRAME = widgets.QFrame(parent = self.SEARCH_CHOOSING)
         self.COUNTRY_CHOOSING_FRAME.setFixedSize(239,54)
@@ -154,8 +157,9 @@ class SearchCity(widgets.QFrame):
         
         
         
-        
+      
         self.SAVE_BUTTON = widgets.QPushButton(self.SETTINGS_CONTEINER_RIGHT_TOP_CHOOSE_FRAME, text = "Зберегти")
+        self.SAVE_BUTTON.clicked.connect(lambda clicked: self.WEATHER_CONTAINER.add_city_card(True))
         self.SAVE_BUTTON.setFixedSize(105, 38)
         self.SAVE_BUTTON.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 4px")
         self.SETTINGS_CONTEINER_RIGHT_TOP_CHOOSE_FRAME_LAYOUT.addWidget(self.SAVE_BUTTON)
@@ -178,15 +182,11 @@ class SearchCity(widgets.QFrame):
         self.MAP_FRAME.setFixedSize(289,256)
         self.MAP_CONTAINER_FRAME_LAYOUT.addWidget( self.MAP_FRAME)
         
-        data = io.BytesIO()
-        map = folium.Map(location = (50, 50))
-        map.save(data, close_file = False)
-        
-        web_engine_view = WebEngine.QWebEngineView(parent = self.MAP_FRAME)
-        web_engine_view.setFixedSize(289,256)
-        
-        html = data.getvalue().decode()
-        web_engine_view.setHtml(html)
+        self.MAP_WEB_VIEW = WebEngine.QWebEngineView(parent = self.MAP_FRAME)
+        self.MAP_WEB_VIEW.setFixedSize(289,256)
+        self.update_map_coordinates(
+            0,0
+        )
         
         
         
@@ -243,16 +243,31 @@ class SearchCity(widgets.QFrame):
         
         
         
-        
+    def update_map_coordinates(self, lat, lon):
+        try:
+            data = io.BytesIO()
+            folium_map = folium.Map(location=(lat, lon))
+            folium_map.save(data, close_file=False)
+            html = data.getvalue().decode()
+            if hasattr(self, 'MAP_WEB_VIEW'):
+                self.MAP_WEB_VIEW.setHtml(html)
+            self.COORDINATE_LABEL2.setText(f"{lat:.4f}, {lon:.4f}")
+        except Exception as e:
+            print("Map update failed:", e)
+
     def mousePressEvent(self, event):
         self.list_of_options_frames = self.MODAL_WINDOW.LIST_OF_OPTIONS_FRAMES
         if event.button() == core.Qt.MouseButton.LeftButton and self.CHOOSED == False:
-            clear_layout(self.MODAL_WINDOW.SETTINGS_CONTEINER_RIGHT_LAYOUT)
-            self.create_frame()
-            for option in self.list_of_options_frames :
+            # Сначала обновляем статус других фреймов
+            for option in self.list_of_options_frames:
                 if option.CHOOSED:
                     option.setStyleSheet("background-color: transparent; border-radius: 0px")
                     option.CHOOSED = False
+            
+            # Потом очищаем layout
+            clear_layout(self.MODAL_WINDOW.SETTINGS_CONTEINER_RIGHT_LAYOUT)
+            # И создаем новый фрейм
+            self.create_frame()
             self.CHOOSED = True
             self.setStyleSheet("background-color : rgba(0,0,0,0.2); border-radius : 4px")       
         

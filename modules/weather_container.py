@@ -1,19 +1,21 @@
 import PyQt6.QtCore as core
 import PyQt6.QtWidgets as widgets
 import PyQt6.QtGui as gui
-from utils import request,json_write
+from utils import request,json_write, close_drop_menu
 from .horizontal_scroll import Horizontal_Scroll
 from .search_frame import SearchFrame
 from .cards import Cards
 from .modal import ModalWindow
+from .modal_options.modal_tools.city_lables import CityListLable
 
 class WeatherContainer(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
-        
+        self.LIST_OF_SETTINGS_CARDS = []
+        self.setObjectName("WEATHER_CONTAINER")
         self.MODAL_WINDOW = ModalWindow(parent = self.window())
         self.setFixedSize(828, 800)
-        self.setObjectName("WEATHER_CONTAINER")
+        
         self.WEATHER_CONTEINER_LAYOUT = widgets.QVBoxLayout(self)
         self.WEATHER_CONTEINER_LAYOUT.setContentsMargins(0,0,0,0)
         self.WEATHER_CONTEINER_LAYOUT.setSpacing(20)
@@ -88,7 +90,7 @@ class WeatherContainer(widgets.QFrame):
         self.ADD_BUTTON = widgets.QPushButton(self.ADD_FRAME)
         self.ADD_BUTTON.setStyleSheet("background-color: rgba(0, 0, 0, 0.2);")
         self.ADD_BUTTON.setFixedSize(97,36)
-        self.ADD_BUTTON.clicked.connect(self.add_city_card)
+        self.ADD_BUTTON.clicked.connect(lambda clicked: self.add_city_card(False))
         
         
         
@@ -491,67 +493,45 @@ class WeatherContainer(widgets.QFrame):
         hbar = self.DAY_WEATHER_SCROLL_AREA.horizontalScrollBar()
         hbar.setValue(hbar.maximum())
     
-    def add_city_card(self):
+    def add_city_card(self,settings_clicked):
         
         our_search_field = self.window().findChild(widgets.QLineEdit, "SEARCH_FIELD")
         our_left_container = self.window().findChild(widgets.QFrame, "Left_container")
-        try:    
-            city_card = Cards(parent = our_left_container.scroll_frame, city_name = our_search_field.text())
-            our_left_container.scroll_frame_layout.addWidget(city_card, alignment = core.Qt.AlignmentFlag.AlignHCenter)
-            city_card.select()
-            our_search_field.clear()
-            self.ADD_BUTTON.hide()
-            self.ADD_BUTTON_LABEL.hide()
-            self.ADD_BUTTON_ICON.hide()
+        modal_city_menu = self.window().findChild(widgets.QFrame, "DROP_CITY_MODAL")
+        search_city = self.window().findChild(widgets.QFrame,"SEARCHCITY")
+        self.DROP_COUNTRY_MODAL = self.window().findChild(widgets.QFrame,"DROP_COUNTRY_MODAL")
+        try:
+            
+            
+            if settings_clicked == False:    
+                city_card = Cards(parent = our_left_container.scroll_frame, city_name = our_search_field.text())
+                
+                if hasattr(search_city, 'CITY_LIST_SCROLL_AREA_FRAME') and search_city.CHOOSED:
+                    settings_city_card = CityListLable(parent= search_city.CITY_LIST_SCROLL_AREA_FRAME,city_name = our_search_field.text())
+                    self.LIST_OF_SETTINGS_CARDS.append(our_search_field.text())
+                    search_city.update_map_coordinates(
+                        city_card.REQUEST_DATA["coord"]["lat"],
+                        city_card.REQUEST_DATA["coord"]["lon"]
+                    )
+                our_left_container.scroll_frame_layout.addWidget(city_card, alignment = core.Qt.AlignmentFlag.AlignHCenter)
+                city_card.select()
+                our_search_field.clear()
+                self.ADD_BUTTON.hide()
+                self.ADD_BUTTON_LABEL.hide()
+                self.ADD_BUTTON_ICON.hide()
+            elif settings_clicked and modal_city_menu.CITY_NAME and self.DROP_COUNTRY_MODAL.COUNTRY_NAME:
+                if modal_city_menu.CITY_LINEEDIT.text() != "" :
+                    city_card = Cards(parent = our_left_container.scroll_frame, city_name = modal_city_menu.CITY_NAME)
+                    
+                    if hasattr(search_city, 'CITY_LIST_SCROLL_AREA_FRAME') and search_city.CHOOSED:
+                        settings_city_card = CityListLable(parent= search_city.CITY_LIST_SCROLL_AREA_FRAME,city_name = modal_city_menu.CITY_NAME)
+                        self.LIST_OF_SETTINGS_CARDS.append(modal_city_menu.CITY_NAME)
+                        search_city.update_map_coordinates(
+                            city_card.REQUEST_DATA["coord"]["lat"],
+                            city_card.REQUEST_DATA["coord"]["lon"]
+                        )
+                    our_left_container.scroll_frame_layout.addWidget(city_card, alignment = core.Qt.AlignmentFlag.AlignHCenter)
+                    city_card.select()
+                    close_drop_menu(self.window())
         except Exception as e:
             print(e)
-    
-    
-    # def open_modal(self):
-    #     # Получаем главное окно (объект)
-    #     main_window = self.window()
-        
-    #     self.MODAL = widgets.QWidget(main_window)
-    #     self.MODAL.setGeometry(10,10, 790, 688)
-    #     self.MODAL.setStyleSheet("background-color: white")
-    #     modal_layout = widgets.QVBoxLayout()
-    #     modal_layout.setAlignment(core.Qt.AlignmentFlag.AlignTop)
-        
-    #     # Объекты выравнивания
-    #     # core.Qt.AlignmentFlag.AlignTop
-        
-    #     self.MODAL.setLayout(modal_layout)
-        
-    #     header_frame = widgets.QFrame(parent = self.MODAL)
-    #     frame_layout = widgets.QHBoxLayout()
-    #     frame_layout.setAlignment(core.Qt.AlignmentFlag.AlignRight)
-    #     header_frame.setLayout(frame_layout)
-    #     header_frame.setFixedSize(742, 28)
-    #     modal_layout.addWidget(header_frame)
-    #     header_frame.setStyleSheet("background-color: cyan")
-        
-    #     close_button = widgets.QPushButton(parent = header_frame)
-    #     frame_layout.addWidget(close_button)
-    #     close_button.setFixedSize(24, 24)
-        
-    #     icon = QtGui.QIcon("media/close.svg")
-    #     close_button.setIcon(icon)
-    #     close_button.clicked.connect(self.MODAL.hide)
-        
-    #     data = io.BytesIO()
-
-    #     map = folium.Map(location = (50, 50))
-    #     #save() - сохраняет данные карты в дате обьекта
-    #     #close_file - =False(оставляем дата обьекта открытым для будущих обновлений карты)
-    #     map.save(data,close_file = False)
-
-    #     self.MODAL.show()
-    #     web_engine_view = WebEngine.QWebEngineView(parent = self.MODAL)
-    #     web_engine_view.setFixedSize(289,256)
-    #     modal_layout.addWidget(web_engine_view)
-        
-    #     html = data.getvalue().decode()
-        
-    #     web_engine_view.setHtml(html)
-
-    

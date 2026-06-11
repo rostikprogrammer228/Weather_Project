@@ -1,49 +1,44 @@
 {
     "coord": {
-        "lon": 17.2537,
-        "lat": 50.273
+        "lon": -60.7276,
+        "lat": -35.899
     },
     "weather": [
         {
-            "id": 501,
-            "main": "Rain",
-            "description": "помірний дощ",
-            "icon": "10d"
+            "id": 800,
+            "main": "Clear",
+            "description": "чисте небо",
+            "icon": "01d"
         }
     ],
     "base": "stations",
     "main": {
-        "temp": 13.43,
-        "feels_like": 13.23,
-        "temp_min": 13.43,
-        "temp_max": 13.43,
-        "pressure": 1018,
-        "humidity": 92,
-        "sea_level": 1018,
-        "grnd_level": 950
+        "temp": 16.62,
+        "feels_like": 15.83,
+        "temp_min": 16.62,
+        "temp_max": 16.62,
+        "pressure": 1016,
+        "humidity": 57,
+        "sea_level": 1016,
+        "grnd_level": 1007
     },
-    "visibility": 5882,
+    "visibility": 10000,
     "wind": {
-        "speed": 1.86,
-        "deg": 345,
-        "gust": 2.79
-    },
-    "rain": {
-        "1h": 2.59
+        "speed": 2.49,
+        "deg": 287,
+        "gust": 3.11
     },
     "clouds": {
-        "all": 100
+        "all": 0
     },
-    "dt": 1781085770,
+    "dt": 1781203211,
     "sys": {
-        "type": 2,
-        "id": 2087246,
-        "country": "CZ",
-        "sunrise": 1781059260,
-        "sunset": 1781118000
+        "country": "AR",
+        "sunrise": 1781176193,
+        "sunset": 1781211325
     },
-    "timezone": 7200,
-    "id": 3068298,
-    "name": "Písečná",
+    "timezone": -10800,
+    "id": 3859102,
+    "name": "Del Valle",
     "cod": 200
 }

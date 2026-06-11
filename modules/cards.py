@@ -12,8 +12,12 @@ class Cards(widgets.QFrame):
    
     CARDS_LIST = []
     def __init__(self, parent, city_name):
-        self.CITY_NAME = city_name
+        
         super().__init__(parent)
+        
+        self.setObjectName("CARD")
+        
+        self.CITY_NAME = city_name
         self.REQUEST_DATA = request(self.CITY_NAME, "current")
         json_write("current.json",self.REQUEST_DATA)
         
@@ -27,14 +31,14 @@ class Cards(widgets.QFrame):
         self.CARD_LAYOUT.setContentsMargins(8,8,8,8)
         
         self.setLayout(self.CARD_LAYOUT)
-        # °
+        
         self.FRAME1 = widgets.QFrame(parent = self)
         self.FRAME1.setFixedSize(200, 82)
         self.FRAME1.setStyleSheet("border: none; background-color: transparent;")
         self.FRAME1_LAYOUT = widgets.QVBoxLayout()
         self.FRAME1.setLayout(self.FRAME1_LAYOUT)
         
-        self.FRAME1_LABEL1 = widgets.QLabel(text = self.REQUEST_DATA["name"], parent = self.FRAME1)
+        self.FRAME1_LABEL1 = widgets.QLabel(text = self.CITY_NAME, parent = self.FRAME1)
         self.FRAME1_LABEL1.setFixedSize(200,28)
         self.FRAME1_LABEL1.setStyleSheet("font-size: 24px; font-family: 'Roboto';font-weight: 500;")
         
@@ -123,7 +127,9 @@ class Cards(widgets.QFrame):
         self.day_request_data = request(self.CITY_NAME, "daily")
         self.data_time()
         self.week_day_translate()
-    
+        
+        
+        
         weather_container = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
         
         clear_layout(weather_container.DAY_WEATHER_SCROLL_FRAME_LAYOUT)
@@ -231,7 +237,7 @@ class Cards(widgets.QFrame):
                 self.TEXT_LABEL = None
             
                 
-        weather_container.LEFT_CITY_LABEL.setText(self.REQUEST_DATA["name"])
+        weather_container.LEFT_CITY_LABEL.setText(self.CITY_NAME)
             # temperature
         weather_container.LEFT_WEATHER_LABEL.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}")
             

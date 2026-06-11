@@ -16,6 +16,13 @@ class SearchField(widgets.QLineEdit):
         self.setFixedSize(200, 22)
         self.setPlaceholderText("Пошук")
         
+        try:
+            with open("json/cities.json") as file:
+                data = json.load(file)
+                self.counties = data["data"]
+        except (FileNotFoundError, json.JSONDecodeError):
+            return
+        
         self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.window())
         self.DROP_DOWN_FRAME.setGeometry(917,92,261,200)
         self.DROP_DOWN_FRAME.setStyleSheet("background-color: #9d8b38; border-radius: 10px;")
@@ -31,8 +38,6 @@ class SearchField(widgets.QLineEdit):
         
         self.DROP_DOWN_SCROLL_AREA.setStyleSheet("background-color: transparent; border: none;")
         
-       
-        
         
         self.DROP_DOWN_SCROLL_AREA_FRAME = widgets.QFrame(parent = self.DROP_DOWN_SCROLL_AREA)
         self.DROP_DOWN_SCROLL_AREA_FRAME.setStyleSheet("background-color: transparent; border-radius: 10px;")
@@ -46,9 +51,6 @@ class SearchField(widgets.QLineEdit):
         
                         
         self.DROP_DOWN_SCROLL_AREA_FRAME.setLayout(self.DROP_DOWN_LAYOUT)
-        
-        
-       
         
         self.setStyleSheet("background-color: transparent; border-radius: 0px; color: white; font-family: 'Roboto'; font-weight: 400; font-size: 17px;")
         
@@ -96,16 +98,11 @@ class SearchField(widgets.QLineEdit):
             if search_frame is None:
                 return
             # Load cities data
-            try:
-                with open("json/cities.json") as file:
-                    data = json.load(file)
-                    counties = data["data"]
-            except (FileNotFoundError, json.JSONDecodeError):
-                return
+            
             
             
             if self.LINE_TEXT.strip():  
-                for country in counties:
+                for country in self.counties:
                     for city in country["cities"]:
                         if city.lower().startswith(self.LINE_TEXT.lower()):
                             self.CITY_SEARCHED_COUNTER += 1
@@ -115,6 +112,10 @@ class SearchField(widgets.QLineEdit):
                             city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=city_name, width = 261,height = 30)
                             city_button.clicked.connect(lambda clicked, name=city_name: self.city_chosen(name))
                             self.DROP_DOWN_LAYOUT.addWidget(city_button)
+                        if city.lower() == self.LINE_TEXT.lower():
+                            our_weather_container.ADD_BUTTON.show()
+                            our_weather_container.ADD_BUTTON_ICON.show()
+                            our_weather_container.ADD_BUTTON_LABEL.show()                                                
                     if self.CITY_SEARCHED_COUNTER >= 15:
                         break
         
@@ -124,5 +125,8 @@ class SearchField(widgets.QLineEdit):
                 search_frame.clear_button.hide()                
     def mousePressEvent(self, event):
         if event.button() == core.Qt.MouseButton.LeftButton :
-            self.window().findChild(widgets.QFrame, "DROP_COUNTRY_MODAL").DROP_DOWN_FRAME.hide()
-            self.window().findChild(widgets.QFrame, "DROP_CITY_MODAL").DROP_DOWN_FRAME.hide()
+            try:
+                self.window().findChild(widgets.QFrame, "DROP_COUNTRY_MODAL").DROP_DOWN_FRAME.hide()
+                self.window().findChild(widgets.QFrame, "DROP_CITY_MODAL").DROP_DOWN_FRAME.hide()
+            except :
+                pass

@@ -10,6 +10,7 @@ from .modal_options.app_language_frame import AppLanguage
 from .modal_options.app_icons_frame import AppIcons
 from utils import clear_layout
 from utils import close_drop_menu
+from .modal_options.modal_tools.city_lables import CityListLable
 
 class ModalWindow(widgets.QWidget):
     def __init__(self, parent):
@@ -17,7 +18,7 @@ class ModalWindow(widgets.QWidget):
         self.hide()
         
         self.setObjectName("MODAL_WINDOW")
-        
+        self.SEARCH_CITY = self.window().findChild(widgets.QFrame,"SEARCHCITY")
         self.setGeometry(391, 106,790, 688)
         self.setAttribute(core.Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setStyleSheet("background-color: rgb(54, 54, 54); border-radius: 10px;")
@@ -119,9 +120,15 @@ class ModalWindow(widgets.QWidget):
         clear_layout(self.SETTINGS_CONTEINER_RIGHT_LAYOUT)
         close_drop_menu(self.window())
     def show_modal(self):
-        close_drop_menu(self.window())
+        self.WEATHER_CONTAINER = self.window().findChild(widgets.QFrame,"WEATHER_CONTAINER")
+        
+       
+        close_drop_menu(self.window()) 
         if self.SEARCH_CITY_FRAME.CHOOSED == False:
             self.SEARCH_CITY_FRAME.CHOOSED = True
             self.SEARCH_CITY_FRAME.setStyleSheet("background-color : rgba(0,0,0,0.2); border-radius : 4px")       
             self.SEARCH_CITY_FRAME.create_frame()
+        list_of_settings_cards = self.WEATHER_CONTAINER.LIST_OF_SETTINGS_CARDS
+        for setting_card in list_of_settings_cards :
+            self.CITY_LABEL = CityListLable(parent = self.SEARCH_CITY.CITY_LIST_SCROLL_AREA_FRAME, city_name = setting_card)    
         self.show()

@@ -12,4 +12,3 @@ def request(city_name,api_request):
     data = response.json()
     return data
 
-list1 = (("Monday","Понеділок"),)
