@@ -23,7 +23,7 @@ class WeatherContainer(widgets.QFrame):
         self.setLayout(self.WEATHER_CONTEINER_LAYOUT)
         
         
-        # В weather frame
+    # def creating_weather_container(self)  :
         self.TOP_FRAME = widgets.QFrame(self)
         self.TOP_FRAME.setFixedSize(790, 36)
         self.TOP_FRAME.setStyleSheet("background-color: transparent; border-radius: 0px;")
@@ -505,10 +505,11 @@ class WeatherContainer(widgets.QFrame):
             
             if settings_clicked == False:    
                 city_card = Cards(parent = our_left_container.scroll_frame, city_name = our_search_field.text())
-                
+                city_name = our_search_field.text()
+                if city_name and city_name not in self.LIST_OF_SETTINGS_CARDS:
+                    self.LIST_OF_SETTINGS_CARDS.append(city_name)
                 if hasattr(search_city, 'CITY_LIST_SCROLL_AREA_FRAME') and search_city.CHOOSED:
-                    settings_city_card = CityListLable(parent= search_city.CITY_LIST_SCROLL_AREA_FRAME,city_name = our_search_field.text())
-                    self.LIST_OF_SETTINGS_CARDS.append(our_search_field.text())
+                    settings_city_card = CityListLable(parent= search_city.CITY_LIST_SCROLL_AREA_FRAME,city_name = city_name)
                     search_city.update_map_coordinates(
                         city_card.REQUEST_DATA["coord"]["lat"],
                         city_card.REQUEST_DATA["coord"]["lon"]
@@ -522,10 +523,11 @@ class WeatherContainer(widgets.QFrame):
             elif settings_clicked and modal_city_menu.CITY_NAME and self.DROP_COUNTRY_MODAL.COUNTRY_NAME:
                 if modal_city_menu.CITY_LINEEDIT.text() != "" :
                     city_card = Cards(parent = our_left_container.scroll_frame, city_name = modal_city_menu.CITY_NAME)
-                    
+                    city_name = modal_city_menu.CITY_NAME
+                    if city_name and city_name not in self.LIST_OF_SETTINGS_CARDS:
+                        self.LIST_OF_SETTINGS_CARDS.append(city_name)
                     if hasattr(search_city, 'CITY_LIST_SCROLL_AREA_FRAME') and search_city.CHOOSED:
-                        settings_city_card = CityListLable(parent= search_city.CITY_LIST_SCROLL_AREA_FRAME,city_name = modal_city_menu.CITY_NAME)
-                        self.LIST_OF_SETTINGS_CARDS.append(modal_city_menu.CITY_NAME)
+                        settings_city_card = CityListLable(parent= search_city.CITY_LIST_SCROLL_AREA_FRAME,city_name = city_name)
                         search_city.update_map_coordinates(
                             city_card.REQUEST_DATA["coord"]["lat"],
                             city_card.REQUEST_DATA["coord"]["lon"]

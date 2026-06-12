@@ -48,4 +48,3 @@ datetime.fromtimestamp(dt,timezone.utc).hour + timezone // 3600 - где fromtim
 enumerate() - она возвращает и пару (индекс, значение)
 
 
-

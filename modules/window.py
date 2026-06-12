@@ -71,7 +71,7 @@ class MainWindow(widgets.QMainWindow):
         
         self.LEFT_CONTAINER = LeftContainer(parent = central_widget)
         self.WEATHER_CONTAINER = WeatherContainer(parent = central_widget)
-        
+        # self.WEATHER_CONTAINER.creating_weather_container()
         center_widget_layout.addWidget(self.LEFT_CONTAINER)
         center_widget_layout.addWidget(self.WEATHER_CONTAINER)
 

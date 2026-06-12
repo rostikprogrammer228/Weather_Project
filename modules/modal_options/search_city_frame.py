@@ -233,13 +233,16 @@ class SearchCity(widgets.QFrame):
         self.CITY_LIST_SCROLL_AREA_FRAME.setStyleSheet("background-color: transparent; border-radius: 8px;")
         self.CITY_LIST_SCROLL_AREA.setWidget(self.CITY_LIST_SCROLL_AREA_FRAME)
         
-        
         self.CITY_LIST_SCROLL_AREA_FRAME_LAYOUT = widgets.QVBoxLayout(self.CITY_LIST_SCROLL_AREA_FRAME)
         self.CITY_LIST_SCROLL_AREA_FRAME_LAYOUT.setContentsMargins(0,0,0,0)
         self.CITY_LIST_SCROLL_AREA_FRAME_LAYOUT.setSpacing(0)
         self.CITY_LIST_SCROLL_AREA_FRAME_LAYOUT.setAlignment(core.Qt.AlignmentFlag.AlignTop)
         
         self.CITY_LIST_SCROLL_AREA_FRAME.setLayout(self.CITY_LIST_SCROLL_AREA_FRAME_LAYOUT)
+
+        # Заполняем список городов из сохранённой коллекции
+        for setting_card in self.WEATHER_CONTAINER.LIST_OF_SETTINGS_CARDS:
+            CityListLable(parent=self.CITY_LIST_SCROLL_AREA_FRAME, city_name=setting_card)
         
         
         

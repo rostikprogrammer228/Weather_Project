@@ -128,7 +128,4 @@ class ModalWindow(widgets.QWidget):
             self.SEARCH_CITY_FRAME.CHOOSED = True
             self.SEARCH_CITY_FRAME.setStyleSheet("background-color : rgba(0,0,0,0.2); border-radius : 4px")       
             self.SEARCH_CITY_FRAME.create_frame()
-        list_of_settings_cards = self.WEATHER_CONTAINER.LIST_OF_SETTINGS_CARDS
-        for setting_card in list_of_settings_cards :
-            self.CITY_LABEL = CityListLable(parent = self.SEARCH_CITY.CITY_LIST_SCROLL_AREA_FRAME, city_name = setting_card)    
         self.show()

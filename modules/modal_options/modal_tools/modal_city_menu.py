@@ -10,10 +10,14 @@ from utils import close_drop_menu
 class ModalCityMenu(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
+        self.CITY_NAME = None  # Инициализируем
+        self.country = None  # Инициализируем
+        self.CITY_TEXT = ""  # Инициализируем
+        self.city_name = ""  # Инициализируем
         self.DROP_DOWN_FRAME = None
         self.setObjectName("DROP_CITY_MODAL")
         self.CHOOSED = False
-        
+        self.DROP_MENU_SHOW = False
         self.setFixedSize(239, 32)
         
         try:
@@ -38,14 +42,10 @@ class ModalCityMenu(widgets.QFrame):
         self.DROP_LAYOUT.addWidget(self.CITY_LINEEDIT)
         self.CITY_LINEEDIT.setReadOnly(True)
         
-        self.ARROW_LABLE = widgets.QLabel(parent = self)
-        self.ARROW_LABLE.setFixedSize(16,16)
-        arrow_pixmap = gui.QPixmap(f"media/title_bar/additional_elements/arrowdown.png")
-        if not arrow_pixmap.isNull():
-            scaled_pixmap = arrow_pixmap.scaled(16, 16, core.Qt.AspectRatioMode.KeepAspectRatio, core.Qt.TransformationMode.SmoothTransformation)
-            self.ARROW_LABLE.setPixmap(scaled_pixmap)
-        
-        self.DROP_LAYOUT.addWidget(self.ARROW_LABLE)
+        self.ARROW_BUTTON = widgets.QPushButton(parent = self, icon = gui.QIcon("media/title_bar/additional_elements/arrowdown.png"))
+        self.ARROW_BUTTON.setFixedSize(16,16)
+        self.ARROW_BUTTON.clicked.connect(self.arrow_clicked)
+        self.DROP_LAYOUT.addWidget(self.ARROW_BUTTON)
        
         self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.window())   
         self.DROP_DOWN_FRAME.setGeometry(613, 361, 239, 186)
@@ -81,53 +81,88 @@ class ModalCityMenu(widgets.QFrame):
         
         self.CITY_LINEEDIT.textChanged.disconnect(self.text_changed)
         self.CITY_LINEEDIT.setText(city_name)
-        self.DROP_DOWN_FRAME.hide()
+        if self.DROP_DOWN_FRAME:
+            self.DROP_DOWN_FRAME.hide()
+            self.DROP_MENU_SHOW = False
         self.CITY_LINEEDIT.textChanged.connect(self.text_changed)
         
         
         
     def text_changed(self):
-        self.window().findChild(widgets.QLineEdit, "SEARCH_FIELD").DROP_DOWN_FRAME.hide()
+        search_field = self.window().findChild(widgets.QLineEdit, "SEARCH_FIELD")
+        country_modal = self.window().findChild(widgets.QFrame, "DROP_COUNTRY_MODAL")
+        
+        # Безопасная проверка для search_field.DROP_DOWN_FRAME
+        if (search_field and hasattr(search_field, 'DROP_DOWN_FRAME') and 
+            search_field.DROP_DOWN_FRAME and isinstance(search_field.DROP_DOWN_FRAME, widgets.QFrame)):
+            search_field.DROP_DOWN_FRAME.hide()
+        
         self.CITY_NAME = None
-        if self.window().findChild(widgets.QFrame,"DROP_COUNTRY_MODAL").COUNTRY_LINEEDIT.text() != "Виберіть країну" :
-            self.CITY_TEXT = self.CITY_LINEEDIT.text()
-            
-            
-            clear_layout(self.DROP_DOWN_LAYOUT)
-
-            
-            
-            if self.CITY_TEXT.strip():
-                for json_country in self.countries:
-                    if self.country == json_country["country"]:
-                        for city in json_country["cities"]:
-                            if city.lower().startswith(self.CITY_TEXT.lower()):
-                                self.city_name = city
-                                self.city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=self.city_name, width = 231, height = 22)
-                                self.city_button.clicked.connect(lambda clicked, name=self.city_name: self.city_chosen(name))
-                                self.DROP_DOWN_LAYOUT.addWidget(self.city_button)
-                            if city.lower() == self.CITY_TEXT.lower():
-                                self.CITY_NAME = self.city_name
-                                self.DROP_DOWN_FRAME.hide()
-                self.DROP_DOWN_FRAME.show()                
-        else:  
-            self.DROP_DOWN_FRAME.hide()      
-
-    def mousePressEvent(self, event: gui.QMouseEvent):
-        if event.button() == core.Qt.MouseButton.LeftButton and self.window().findChild(widgets.QFrame,"DROP_COUNTRY_MODAL").COUNTRY_CHOOSED:
-            try:
-                self.country = self.window().findChild(widgets.QFrame,"DROP_COUNTRY_MODAL").COUNTRY_NAME
-            except:
-                pass
-            self.CITY_LINEEDIT.setReadOnly(False)
-            self.CITY_LINEEDIT.setFocus()
-            for json_country in self.countries:
-                    if self.country == json_country["country"]:
-                        for city in json_country["cities"]:
-                            self.city_name = city
-                            self.city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=self.city_name, width = 231, height = 22) 
-                            self.city_button.clicked.connect(lambda clicked, name=self.city_name: self.city_chosen(name))
-                            self.DROP_DOWN_LAYOUT.addWidget(self.city_button)
+        
+        # Получаем выбранную страну
+        if country_modal and hasattr(country_modal, 'COUNTRY_NAME'):
+            self.country = country_modal.COUNTRY_NAME
+        else:
+            self.country = None
+        
+        if not self.country:
+            if self.DROP_DOWN_FRAME:
+                self.DROP_DOWN_FRAME.hide()
+                self.DROP_MENU_SHOW = False
+            return
+        
+        self.CITY_TEXT = self.CITY_LINEEDIT.text()
+        clear_layout(self.DROP_DOWN_LAYOUT)
+        
+        for json_country in self.countries:
+            if self.country == json_country["country"]:
+                for city in json_country["cities"]:
+                    if not self.CITY_TEXT.strip() or city.lower().startswith(self.CITY_TEXT.lower()):
+                        self.city_name = city
+                        self.city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=self.city_name, width = 231, height = 22)
+                        self.city_button.clicked.connect(lambda clicked, name=self.city_name: self.city_chosen(name))
+                        self.DROP_DOWN_LAYOUT.addWidget(self.city_button)
+                    if self.CITY_TEXT.strip() and city.lower() == self.CITY_TEXT.lower():
+                        self.CITY_NAME = self.city_name
+                        if self.DROP_DOWN_FRAME:
+                            self.DROP_DOWN_FRAME.hide()
+                            self.DROP_MENU_SHOW = False
+        
+        if self.DROP_DOWN_LAYOUT.count() > 0 and self.DROP_DOWN_FRAME:
             self.DROP_DOWN_FRAME.show()
+            self.DROP_MENU_SHOW = True
+        elif self.DROP_DOWN_FRAME:
+            self.DROP_DOWN_FRAME.hide()
+            self.DROP_MENU_SHOW = False
+
+
+    def arrow_clicked(self):
+        if not self.DROP_DOWN_FRAME:
+            return
+        
+        if self.DROP_MENU_SHOW:
+            self.DROP_DOWN_FRAME.hide()
+            self.DROP_MENU_SHOW = False
+            return
+        
+        clear_layout(self.DROP_DOWN_LAYOUT)
+        try:
+            country_modal = self.window().findChild(widgets.QFrame, "DROP_COUNTRY_MODAL")
+            if country_modal and hasattr(country_modal, 'COUNTRY_NAME'):
+                self.country = country_modal.COUNTRY_NAME
             
-                            
+            if not self.country:
+                return
+            
+            for json_country in self.countries:
+                if self.country == json_country["country"]:
+                    for city in json_country["cities"]:
+                        self.city_name = city
+                        self.city_button = SearchFieldCityButton(parent=self.DROP_DOWN_SCROLL_AREA_FRAME, text=self.city_name, width = 231, height = 22)
+                        self.city_button.clicked.connect(lambda clicked, name=self.city_name: self.city_chosen(name))
+                        self.DROP_DOWN_LAYOUT.addWidget(self.city_button)
+            if self.DROP_DOWN_LAYOUT.count() > 0:
+                self.DROP_DOWN_FRAME.show()
+                self.DROP_MENU_SHOW = True
+        except:
+            pass    
