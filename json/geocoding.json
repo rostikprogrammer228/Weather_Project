@@ -1,43 +1,9 @@
 [
     {
-        "name": "Annaba",
-        "local_names": {
-            "fr": "Annaba",
-            "de": "Annaba",
-            "en": "Annaba",
-            "ar": "عنابة",
-            "mk": "Анаба",
-            "ru": "Аннаба",
-            "uk": "Аннаба",
-            "sl": "Anaba",
-            "kk": "Аннаба қаласы",
-            "bn": "আন্নাবা",
-            "fa": "عنابه",
-            "ur": "عنابہ",
-            "hy": "Աննաբա",
-            "lt": "Anaba",
-            "sw": "Hippo",
-            "hu": "Annába",
-            "el": "Άναμπα",
-            "ks": "عنابہ",
-            "es": "Annaba",
-            "nl": "Annaba (stad)",
-            "ko": "안나바",
-            "zh": "安纳巴",
-            "bg": "Анаба",
-            "la": "Hippo Regius",
-            "ja": "アンナバ",
-            "sr": "Анаба"
-        },
-        "lat": 36.8982165,
-        "lon": 7.7549272,
-        "country": "DZ",
-        "state": "Annaba"
-    },
-    {
-        "name": "Islet Near Chetaibi",
-        "lat": 37.077479499999995,
-        "lon": 7.393345631935897,
-        "country": "DZ"
+        "name": "Del Viso",
+        "lat": -34.4497463,
+        "lon": -58.802606,
+        "country": "AR",
+        "state": "Buenos Aires"
     }
 ]

@@ -1,7 +1,7 @@
 import PyQt6.QtCore as core
 import PyQt6.QtWidgets as widgets
 import PyQt6.QtGui as gui
-
+from utils import change_size
 class Header(widgets.QFrame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -37,8 +37,9 @@ class Header(widgets.QFrame):
         max_button.setIcon(max_close_icon)
         layout.addWidget(max_button)
         max_button.setStyleSheet("border: none;background-color: transparent;")
-        
-        max_button.clicked.connect(self.window().showMaximized)
+        window = self.window()
+       
+        max_button.clicked.connect(lambda: change_size(window, True))
 
    
         
