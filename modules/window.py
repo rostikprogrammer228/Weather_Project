@@ -7,7 +7,7 @@ from .app import application
 from .left_container import LeftContainer
 from .weather_container import WeatherContainer
 from utils import close_drop_menu
-
+from .header import Header
 class MainWindow(widgets.QMainWindow):
     
     def __init__(self):
@@ -34,7 +34,7 @@ class MainWindow(widgets.QMainWindow):
         
         self.content_container = widgets.QFrame(parent = self)
         
-        # content_container.setSizePolicy(widgets.QSizePolicy.Policy.Expanding, widgets.QSizePolicy.Policy.Expanding)
+        
         
         self.content_layout = widgets.QVBoxLayout()
         self.content_layout.setSpacing(0)
@@ -45,6 +45,8 @@ class MainWindow(widgets.QMainWindow):
         
         
         
+        self.HEADER = Header(parent = self.content_container)
+        self.content_layout.addWidget(self.HEADER)
         
         
         self.central_widget = widgets.QWidget(self.content_container)
@@ -72,25 +74,13 @@ class MainWindow(widgets.QMainWindow):
         
         self.LEFT_CONTAINER = LeftContainer(parent = self.central_widget)
         self.WEATHER_CONTAINER = WeatherContainer(parent = self.central_widget)
-        # self.WEATHER_CONTAINER.creating_weather_container()
+       
         self.center_widget_layout.addWidget(self.LEFT_CONTAINER)
         self.center_widget_layout.addWidget(self.WEATHER_CONTAINER)
 
     def mousePressEvent(self, event: gui.QMouseEvent):
         if event.button() == core.Qt.MouseButton.LeftButton:
             close_drop_menu(self)
-    # def keyPressEvent(self, event: gui.QKeyEvent):
-    #     if event.key() == core.Qt.Key.Key_K:
-    #         print(event.text())
-    #         print(event.key())      
-    
-    # def mouseReleaseEvent(self, event: gui.QMouseEvent):
-    #     if event.button() == core.Qt.MouseButton.RightButton:
-    #         print("right: works")
-    
-    # def keyReleaseEvent(self, event: gui.QKeyEvent):
-    #     if event.key() == core.Qt.Key.Key_K:
-    #         print(f"Key: {event.key()}")
-    #         print(f"Text: {event.text()}")
+   
         
 main_window = MainWindow()

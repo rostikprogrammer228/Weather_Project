@@ -17,7 +17,7 @@ class WeatherContainer(widgets.QFrame):
         self.LIST_OF_SETTINGS_CARDS = []
         self.LANGUAGE = "Українська"
         self.setObjectName("WEATHER_CONTAINER")
-        self.MODAL_WINDOW = ModalWindow(parent = self.window())
+        self.MODAL_WINDOW = ModalWindow(parent = self.window().central_widget)
         self.setFixedSize(828, 760)
         
         if self.LANGUAGE == "Українська":

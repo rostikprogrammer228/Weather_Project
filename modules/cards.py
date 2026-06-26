@@ -296,17 +296,13 @@ class Cards(widgets.QFrame):
             
         
         weather_container.LEFT_CITY_LABEL.setText(self.CITY_TEXT)
-            # temperature
-        # if len(weather_container.LEFT_WEATHER_LABEL.text()) > 1 :
-        #     weather_container.LEFT_WEATHER_LAYOUT.setSpacing(7)
-        # else:
-        #     weather_container.LEFT_WEATHER_LAYOUT.setFixedSize(0)
+       
         weather_container.LEFT_WEATHER_LABEL.setText(f"{int(self.REQUEST_DATA["main"]["temp"])}")
             
         weather_container.LEFT_WEATHER_LABEL11.setText("°")
-            # description
+            
         weather_container.LEFT_DESCRIPTION_LABEL1.setText(self.frame1_label3)
-            # max min temp
+            
         weather_container.LEFT_DESCRIPTION_LABEL2.setText(self.max_min_temp)
             
         weather_icons_pack = self.window().findChild(widgets.QFrame, "APPICONS").WEATHER_ICONS_PACK

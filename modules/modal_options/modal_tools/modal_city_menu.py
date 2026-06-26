@@ -26,6 +26,7 @@ class ModalCityMenu(widgets.QFrame):
         self.setFixedSize(scale.scale_x(239), scale.scale_y(32))
         self.language_widget = self.window().findChild(widgets.QFrame, "WEATHER_CONTAINER")
         self.APP_SIZE = self.window().findChild(widgets.QFrame,"APPSIZE")
+        self.MODAL_WINDOW = self.window().findChild(widgets.QWidget, "MODAL_WINDOW")
         try:
             with open("json/cities.json") as file:
                 data = json.load(file)
@@ -57,24 +58,24 @@ class ModalCityMenu(widgets.QFrame):
         self.ARROW_BUTTON.setFixedSize(scale.scale_x(16), scale.scale_y(16))
         self.ARROW_BUTTON.clicked.connect(self.arrow_clicked)
         self.DROP_LAYOUT.addWidget(self.ARROW_BUTTON)
-       
-        self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.window()) 
-        self.DROP_DOWN_FRAME.setGeometry(613, 321, 239, 186)
-
+        self.SETTINGS_FRAME = self.MODAL_WINDOW.SETTINGS_CONTEINER_RIGHT
+        self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.SETTINGS_FRAME) 
+        self.DROP_DOWN_FRAME.setGeometry(0, scale.scale_y(169), scale.scale_x(239), scale.scale_y(186))
+        
         button_group = getattr(self.APP_SIZE, "BUTTON_GROUP", None)
 
-        if button_group and not sip.isdeleted(button_group):
-            checked = button_group.checkedButton()
-            if checked:
-                size_text = self.APP_SIZE.SIZE_TEXT
-                if size_text == "1200x800":
-                    self.DROP_DOWN_FRAME.setGeometry(613, 321, scale.scale_x(239), scale.scale_y(186))
-                elif size_text == "1440x1024":
-                    self.DROP_DOWN_FRAME.setGeometry(733, 400, scale.scale_x(239), scale.scale_y(186))
-                elif size_text == "1512x982":
-                    self.DROP_DOWN_FRAME.setGeometry(770, 386, scale.scale_x(239), scale.scale_y(186))
-                elif size_text == "1728x1117":
-                    self.DROP_DOWN_FRAME.setGeometry(879, 435, scale.scale_x(239), scale.scale_y(186))
+        # if button_group and not sip.isdeleted(button_group):
+        #     checked = button_group.checkedButton()
+        #     if checked:
+        #         size_text = self.APP_SIZE.SIZE_TEXT
+        #         if size_text == "1200x800":
+        #             self.DROP_DOWN_FRAME.setGeometry(613, 321, scale.scale_x(239), scale.scale_y(186))
+        #         elif size_text == "1440x1024":
+        #             self.DROP_DOWN_FRAME.setGeometry(733, 400, scale.scale_x(239), scale.scale_y(186))
+        #         elif size_text == "1512x982":
+        #             self.DROP_DOWN_FRAME.setGeometry(770, 386, scale.scale_x(239), scale.scale_y(186))
+        #         elif size_text == "1728x1117":
+        #             self.DROP_DOWN_FRAME.setGeometry(879, 435, scale.scale_x(239), scale.scale_y(186))
         self.DROP_DOWN_FRAME.setStyleSheet("background-color: #676767; border-radius: 10px;")
         self.DROP_DOWN_FRAME.hide()
         
@@ -157,7 +158,9 @@ class ModalCityMenu(widgets.QFrame):
                             self.DROP_MENU_SHOW = False
         
         if self.DROP_DOWN_LAYOUT.count() > 0 and self.DROP_DOWN_FRAME:
+            
             self.DROP_DOWN_FRAME.show()
+            self.DROP_DOWN_FRAME.raise_()
             self.DROP_MENU_SHOW = True
         elif self.DROP_DOWN_FRAME:
             self.DROP_DOWN_FRAME.hide()
@@ -192,7 +195,9 @@ class ModalCityMenu(widgets.QFrame):
                         self.city_button.clicked.connect(lambda clicked, name=self.city_name: self.city_chosen(name))
                         self.DROP_DOWN_LAYOUT.addWidget(self.city_button)
             if self.DROP_DOWN_LAYOUT.count() > 0:
+                
                 self.DROP_DOWN_FRAME.show()
+                self.DROP_DOWN_FRAME.raise_()
                 self.DROP_MENU_SHOW = True
         except:
             pass    

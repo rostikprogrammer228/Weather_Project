@@ -165,7 +165,7 @@ class AppSize(widgets.QFrame):
         search_frame = main_window.findChild(widgets.QFrame, "SEARCH_FRAME")
         left_container = main_window.findChild(widgets.QFrame, "Left_container")
         
-        # try:
+        
         if self.BUTTON_GROUP.checkedButton():
             size_text = self.BUTTON_GROUP.checkedButton().text()
             self.SIZE_TEXT = size_text
@@ -180,7 +180,7 @@ class AppSize(widgets.QFrame):
             main_window.setGeometry(center_x, center_y, window_width, window_height)
             
             scale.update_size(window_width,window_height)
-            
+            main_window.HEADER.setFixedSize(self.window().width(), 40)
             weather_container.setFixedSize(scale.scale_x(828), scale.scale_y(760))
             weather_container.WEATHER_CONTEINER_LAYOUT.setSpacing(scale.scale_y(20))
             weather_container.TOP_FRAME_LAYOUT.setSpacing(scale.scale_x(278))
@@ -432,7 +432,7 @@ class AppSize(widgets.QFrame):
                 modal_window.SETTINGS_CONTEINER_LEFT_OPTIONS_FRAME.setFixedSize(scale.scale_x(158), scale.scale_y(140))
                 modal_window.SETTINGS_CONTEINER_RIGHT.setFixedSize(scale.scale_x(544), scale.scale_y(578))
                 modal_window.CLOSE_BUTTON.setIconSize(core.QSize(scale.scale_x(24), scale.scale_y(24)))
-                    
+                
                 
             if left_container:
                 left_container.leftcontainer_layout.setContentsMargins(0, scale.scale_y(20), 0, 0)
@@ -449,6 +449,7 @@ class AppSize(widgets.QFrame):
                 search_city.setFixedSize(scale.scale_x(158), scale.scale_y(35))
                 search_city.LABEL.setFixedWidth(scale.scale_x(150))
                 scale.setFontSize(search_city.LABEL,16)
+                
                 
                 
             if self:
@@ -492,8 +493,6 @@ class AppSize(widgets.QFrame):
             
                 
         
-        # except Exception as e:
-        #     print(f"Помилка під час обрання розмірів додатку : {e}")
         
         
     def mousePressEvent(self, event):

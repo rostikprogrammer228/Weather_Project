@@ -224,7 +224,8 @@ class SearchCity(widgets.QFrame):
         self.SETTINGS_CONTEINER_RIGHT_BOTTOM_FRAME_LAYOUT.setSpacing(scale.scale_y(16))
         self.SETTINGS_CONTEINER_RIGHT_BOTTOM_FRAME.setLayout(self.SETTINGS_CONTEINER_RIGHT_BOTTOM_FRAME_LAYOUT)
         
-        self.BOTTOM_FRAME_LABEL = widgets.QLabel(text = self.bottom_frame_label)
+        self.BOTTOM_FRAME_LABEL = widgets.QLabel(parent = self.SETTINGS_FRAME,text = self.bottom_frame_label)
+        self.BOTTOM_FRAME_LABEL.lower()
         self.BOTTOM_FRAME_LABEL.setFixedSize(scale.scale_x(544), scale.scale_y(21))
         self.BOTTOM_FRAME_LABEL.setStyleSheet("color: white;border-radius: 0px; background-color: transparent; font-family: Roboto; font-weight: 400;")
         scale.setFontSize(self.BOTTOM_FRAME_LABEL,18)

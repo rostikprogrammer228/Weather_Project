@@ -42,4 +42,3 @@ class Vertical_Card(widgets.QFrame):
     
     
     
-    # pixmap = gui.QPixmap(f"media/title_bar/weather_icons/{self.REQUEST_DATA['weather'][0]['icon']}.svg")

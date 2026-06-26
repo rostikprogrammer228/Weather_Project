@@ -25,7 +25,7 @@ class SearchField(widgets.QLineEdit):
         except (FileNotFoundError, json.JSONDecodeError):
             return
         
-        self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.window())
+        self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.window().central_widget)
         self.DROP_DOWN_FRAME.setGeometry(scale.scale_x(918), scale.scale_y(55), scale.scale_x(261), scale.scale_y(200))
         
         self.DROP_DOWN_FRAME.setStyleSheet(f"background-color: #2c2c2c; border-radius: 10px;")
@@ -72,7 +72,7 @@ class SearchField(widgets.QLineEdit):
             our_weather_container.ADD_BUTTON_LABEL.show()
         
         self.CITY_NAME = city_name
-        # Temporarily disconnect signal to prevent text_changed from hiding buttons
+        
         self.textChanged.disconnect(self.text_changed)
         self.setText(city_name)
         self.textChanged.connect(self.text_changed)
@@ -100,14 +100,14 @@ class SearchField(widgets.QLineEdit):
             elif self.language == "English" :
                 self.drop_down_label = "Search result"
             self.DROP_DOWN_LABEL = widgets.QLabel(parent = self.DROP_DOWN_FRAME, text = self.drop_down_label)
-            self.DROP_DOWN_LABEL.setStyleSheet("background-color: transparent; border: none; color: #d2c685; font-family: 'Roboto'; font-weight: 400;")
+            self.DROP_DOWN_LABEL.setStyleSheet("background-color: transparent; border: none; color: rgba(255,255,255,0.5); font-family: 'Roboto'; font-weight: 400;")
             scale.setFontSize(self.DROP_DOWN_LABEL,14)
             self.DROP_DOWN_LAYOUT.addWidget(self.DROP_DOWN_LABEL)
             
             self.CITY_SEARCHED_COUNTER = 0
             if search_frame is None:
                 return
-            # Load cities data
+           
             
             
             

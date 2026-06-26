@@ -80,23 +80,3 @@ class CityListLable(widgets.QFrame):
         self.deleteLater()
         
         
-    # main_window = self.window()
-    #     if main_window:
-    #         weather_container = main_window.findChild(widgets.QFrame, "WEATHER_CONTAINER")
-    #         left_container = main_window.findChild(widgets.QFrame, "Left_container")
-    #         if weather_container and hasattr(weather_container, 'LIST_OF_SETTINGS_CARDS'):
-    #             weather_container.LIST_OF_SETTINGS_CARDS = [name for name in weather_container.LIST_OF_SETTINGS_CARDS if name != self.CITY_NAME]
-    #         if left_container and hasattr(left_container, 'scroll_frame_layout'):
-    #             for index in range(left_container.scroll_frame_layout.count() - 1, -1, -1):
-    #                 item = left_container.scroll_frame_layout.itemAt(index)
-    #                 if item:
-    #                     widget = item.widget()
-    #                     if widget and getattr(widget, 'CITY_NAME', None) == self.CITY_NAME:
-    #                         left_container.scroll_frame_layout.removeWidget(widget)
-    #                         widget.setParent(None)
-    #                         widget.deleteLater()
-    #     parent_layout = self.parent().layout() if self.parent() else None
-    #     if parent_layout:
-    #         parent_layout.removeWidget(self)
-    #     self.setParent(None)
-    #     self.deleteLater()

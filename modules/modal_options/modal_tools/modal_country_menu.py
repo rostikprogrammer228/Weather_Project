@@ -13,16 +13,17 @@ class ModalCountryMenu(widgets.QFrame):
         super().__init__(parent)
         self.setObjectName("CONTRYMENU")
         self.COUNTRY_LABEL = None
-        self.COUNTRY_NAME = None  # Инициализируем
-        self.COUNTRY_TEXT = ""  # Инициализируем
-        self.country_name = ""  # Инициализируем
-        self.DROP_DOWN_FRAME = None  # Инициализируем перед любыми return
+        self.COUNTRY_NAME = None  
+        self.COUNTRY_TEXT = ""  
+        self.country_name = "" 
+        self.DROP_DOWN_FRAME = None 
         self.setObjectName("DROP_COUNTRY_MODAL")
         self.CHOOSED = False
         self.COUNTRY_CHOOSED = False
         self.DROP_MENU_SHOW = False
         self.setFixedSize(scale.scale_x(239), scale.scale_y(32))
         self.APP_SIZE = self.window().findChild(widgets.QFrame,"APPSIZE")
+        self.MODAL_WINDOW = self.window().findChild(widgets.QWidget, "MODAL_WINDOW")
         try:
             with open("json/cities.json") as file:
                 data = json.load(file)
@@ -53,24 +54,25 @@ class ModalCountryMenu(widgets.QFrame):
         self.ARROW_BUTTON.setFixedSize(scale.scale_x(16), scale.scale_y(16))
         self.ARROW_BUTTON.clicked.connect(self.arrow_clicked)
         self.DROP_LAYOUT.addWidget(self.ARROW_BUTTON)
-        
-        self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.window())
-        self.DROP_DOWN_FRAME.setGeometry(613, 251, 239, 186)
-        
+        self.SETTINGS_FRAME = self.MODAL_WINDOW.SETTINGS_CONTEINER_RIGHT
+        self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.SETTINGS_FRAME)
+        self.DROP_DOWN_FRAME.setGeometry(0, scale.scale_y(99), scale.scale_x(239), scale.scale_y(186))
+        print("После setGeometry:", self.DROP_DOWN_FRAME.geometry())
+        print(type(self)) 
         button_group = getattr(self.APP_SIZE, "BUTTON_GROUP", None)
 
-        if button_group and not sip.isdeleted(button_group):
-            checked = button_group.checkedButton()
-            if checked:
-                size_text = self.APP_SIZE.SIZE_TEXT
-                if size_text == "1200x800":
-                    self.DROP_DOWN_FRAME.setGeometry(613, 251, scale.scale_x(239), scale.scale_y(186))
-                elif size_text == "1440x1024":
-                    self.DROP_DOWN_FRAME.setGeometry(733, 312, scale.scale_x(239), scale.scale_y(186))
-                elif size_text == "1512x982":
-                    self.DROP_DOWN_FRAME.setGeometry(770, 300, scale.scale_x(239), scale.scale_y(186))
-                elif size_text == "1728x1117":
-                    self.DROP_DOWN_FRAME.setGeometry(879, 338, scale.scale_x(239), scale.scale_y(186))
+        # if button_group and not sip.isdeleted(button_group):
+        #     checked = button_group.checkedButton()
+        #     if checked:
+        #         size_text = self.APP_SIZE.SIZE_TEXT
+        #         if size_text == "1200x800":
+        #             self.DROP_DOWN_FRAME.setGeometry(613, 251, scale.scale_x(239), scale.scale_y(186))
+        #         elif size_text == "1440x1024":
+        #             self.DROP_DOWN_FRAME.setGeometry(733, 312, scale.scale_x(239), scale.scale_y(186))
+        #         elif size_text == "1512x982":
+        #             self.DROP_DOWN_FRAME.setGeometry(770, 300, scale.scale_x(239), scale.scale_y(186))
+        #         elif size_text == "1728x1117":
+        #             self.DROP_DOWN_FRAME.setGeometry(879, 338, scale.scale_x(239), scale.scale_y(186))
         
         self.DROP_DOWN_FRAME.setStyleSheet("background-color: #676767; border-radius: 10px;")
         self.DROP_DOWN_FRAME.hide()
@@ -165,12 +167,12 @@ class ModalCountryMenu(widgets.QFrame):
     def arrow_clicked(self):
         if self.DROP_MENU_SHOW == False:
             if not self.DROP_DOWN_FRAME:
-                return  # Если DROP_DOWN_FRAME не инициализирован, выходим
+                return 
             main_window = self.window()
             city_modal = main_window.findChild(widgets.QFrame, "DROP_CITY_MODAL")
             if city_modal and hasattr(city_modal, 'DROP_DOWN_FRAME') and isinstance(city_modal.DROP_DOWN_FRAME, widgets.QFrame):
                 city_modal.DROP_DOWN_FRAME.hide()
-            clear_layout(self.DROP_DOWN_LAYOUT)  # Очистить layout перед показом
+            clear_layout(self.DROP_DOWN_LAYOUT) 
             try:
                 for country in self.countries:
                     self.country_name = country["country"]

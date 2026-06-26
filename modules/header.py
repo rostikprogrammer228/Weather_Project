@@ -24,7 +24,7 @@ class Header(widgets.QFrame):
         close_button.clicked.connect(self.window().close)
         close_button.setStyleSheet("border: none;background-color: transparent;")
         minimize_button = widgets.QPushButton(parent= self)
-        minimize_icon = gui.QIcon("media/title_bar/Minimize_Button.svg")
+        minimize_icon = gui.QIcon("media/title_bar/Minimize_Button_Hover.svg")
         minimize_button.setIcon(minimize_icon)
         layout.addWidget(minimize_button)
         minimize_button.setStyleSheet("border: none;background-color: transparent;")
