@@ -57,8 +57,7 @@ class ModalCountryMenu(widgets.QFrame):
         self.SETTINGS_FRAME = self.MODAL_WINDOW.SETTINGS_CONTEINER_RIGHT
         self.DROP_DOWN_FRAME = widgets.QFrame(parent = self.SETTINGS_FRAME)
         self.DROP_DOWN_FRAME.setGeometry(0, scale.scale_y(99), scale.scale_x(239), scale.scale_y(186))
-        print("После setGeometry:", self.DROP_DOWN_FRAME.geometry())
-        print(type(self)) 
+        
         button_group = getattr(self.APP_SIZE, "BUTTON_GROUP", None)
 
         # if button_group and not sip.isdeleted(button_group):
