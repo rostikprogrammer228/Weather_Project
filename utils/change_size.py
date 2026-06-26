@@ -40,6 +40,7 @@ def change_size(main_window,fullscreen = False):
             
             if app_size.BUTTON_GROUP.checkedButton():
                 size_text = app_size.BUTTON_GROUP.checkedButton().text()
+                app_size.SIZE = size_text
                 window_width, window_height = map(int, size_text.split("x"))
                 scale.update_size(window_width,window_height)
                 screen = application.primaryScreen()

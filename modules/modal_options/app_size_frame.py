@@ -11,6 +11,7 @@ class AppSize(widgets.QFrame):
         super().__init__(parent)
         self.setObjectName("APPSIZE")
         self.CHOOSED = False
+        self.SIZE = None
         self.MODAL_WINDOW = self.window().findChild(widgets.QWidget,"MODAL_WINDOW")
         self.setFixedSize(158,35)
         self.setStyleSheet("background-color: transparent")
@@ -151,7 +152,9 @@ class AppSize(widgets.QFrame):
         self.SAVE_BUTTON.setStyleSheet("background-color: rgba(0, 0, 0, 0.2); border-radius: 4px; color: white;font-family: 'Roboto'; font-weight: 400;")
         scale.setFontSize(self.SAVE_BUTTON,14)
         self.SIZE_FRAME_LAYOUT.addWidget(self.SAVE_BUTTON)
-        
+        for button in self.BUTTON_GROUP.buttons():
+            if button.text() == self.SIZE:
+                button.setChecked(True)
     
                 
         
