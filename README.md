@@ -61,7 +61,7 @@ A desktop weather application developed with Python and PyQt6.
 
 1. Клонувати репозиторій
 
-git clone https://github.com/BilashEvgen/Weather-project.git
+git clone https://github.com/rostikprogrammer228/Weather_Project.git
 
 2. Перейти до папки проєкту
 
@@ -207,7 +207,7 @@ The goal of this project was to develop a desktop weather application for viewin
 
 1. Clone the repository
 
-git clone https://github.com/BilashEvgen/Weather_Project.git
+git clone https://github.com/rostikprogrammer228/Weather_Project.git
 
 2. Navigate to the project folder
 
